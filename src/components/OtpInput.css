@@ -1,0 +1,62 @@
+.otp-input-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.otp-input {
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: 500;
+  text-align: center;
+  color: #1a365d;
+  background: white;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+  transform: translateY(-1px);
+}
+
+.otp-input:hover {
+  border-color: #4299e1;
+}
+
+/* Remove spinner buttons from number input */
+.otp-input::-webkit-inner-spin-button,
+.otp-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.otp-input::placeholder {
+  color: #cbd5e0;
+}
+
+/* Style for filled state */
+.otp-input:not(:placeholder-shown) {
+  border-color: #48bb78;
+  background-color: #f0fff4;
+}
+
+/* Mobile optimization */
+@media (max-width: 480px) {
+  .otp-input-container {
+    gap: 8px;
+  }
+
+  .otp-input {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+} 

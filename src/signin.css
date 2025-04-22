@@ -1,0 +1,345 @@
+.signin-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7));
+  background-size: cover;
+  background-position: center;
+  padding: 1.5rem;
+  position: relative;
+}
+
+/* Add animated gradient overlay */
+.signin-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, 
+    rgba(37, 99, 235, 0.2) 0%,
+    rgba(99, 102, 241, 0.2) 50%,
+    rgba(37, 99, 235, 0.2) 100%);
+  animation: gradientMove 15s ease infinite;
+  background-size: 200% 200%;
+  pointer-events: none; /* Ensure it doesn't block clicks */
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.container {
+  display: flex;
+  width: 800px;
+  min-height: 500px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  position: relative;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1;
+}
+
+/* Left Side Styling */
+.signin-left {
+  flex: 1;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start; /* Change to flex-start to position logo at top */
+  justify-content: flex-start;
+  background: white;
+}
+
+
+/* Add background image to left side */
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/images/preview.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 1;
+  z-index: 1;
+}
+
+.logo {
+  width: 70px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.heading {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1e40af;
+  margin-bottom: 0.75rem;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.subheading {
+  font-size: 1.1rem;
+  color: #1f2937;
+  max-width: 80%;
+  margin: 0 auto;
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+/* Right Side Styling */
+.signin-right {
+  flex: 1;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  color: white;
+  position: relative;
+  overflow: visible; /* Ensure the link is not clipped */
+}
+
+.signin-right::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/images/pattern.svg');
+  opacity: 0.1;
+  animation: patternMove 20s linear infinite;
+  pointer-events: none; /* Ensure it doesn't block clicks */
+}
+
+@keyframes patternMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.text {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+  pointer-events: auto; /* Ensure it's clickable */
+  opacity: 1; /* Ensure it's visible */
+  position: relative;
+  z-index: 2; /* Ensure it's above other elements */
+}
+
+.link:hover {
+  opacity: 0.8;
+}
+
+/* Add label styles */
+.form-group {
+  width: 80%;
+  margin: 0 auto 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: left;
+}
+
+.input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  background: white;
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+}
+
+.input::placeholder {
+  color: #94a3b8;
+}
+
+.recaptcha-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 1.25rem 0;
+}
+
+.button {
+  width: 100%;
+  padding: 0.875rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.button:hover::before {
+  left: 100%;
+}
+
+.button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.social-login {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.social-login p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 1.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+}
+
+.social-login p::before,
+.social-login p::after {
+  content: '';
+  height: 1px;
+  width: 90px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 1rem;
+}
+
+.google-signin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.875rem;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  color: #1f2937;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.google-signin:hover {
+  background: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.social-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.error,
+.success {
+  padding: 1rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+  text-align: center;
+  animation: slideIn 0.3s ease;
+  font-size: 0.95rem;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    max-width: 400px;
+    flex-direction: column;
+  }
+
+  .signin-left,
+  .signin-right {
+    padding: 2rem;
+  }
+
+  .heading {
+    font-size: 2rem;
+  }
+
+  .form-header h2 {
+    font-size: 1.75rem;
+  }
+
+  .recaptcha-container {
+    transform: scale(0.85);
+  }
+}

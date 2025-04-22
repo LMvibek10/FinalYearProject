@@ -1,0 +1,460 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9fafb;
+  }
+  
+  /* Header */
+  .homepage-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .homepage-header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  
+  .homepage-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+  }
+  
+  .homepage-logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .homepage-logo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: #2563eb;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+  }
+  
+  .homepage-logo-text {
+    margin-left: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #1e293b;
+  }
+  
+  .homepage-logo-image {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+  }
+  
+  .homepage-nav-links {
+    display: flex;
+    gap: 32px;
+  }
+  
+  .homepage-nav-link {
+    color: #4b5563;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .homepage-nav-link:hover {
+    color: #2563eb;
+  }
+  
+  .homepage-auth-buttons {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .homepage-login-button {
+    padding: 8px 16px;
+    background-color: transparent;
+    color: #2563eb;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .homepage-signup-button {
+    padding: 8px 16px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .homepage-menu-button {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  /* Mobile Menu */
+  .homepage-mobile-menu {
+    display: none;
+    background-color: white;
+    padding: 16px;
+  }
+  
+  .homepage-mobile-menu-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .homepage-mobile-nav-link {
+    color: #4b5563;
+    text-decoration: none;
+    padding: 8px;
+  }
+  
+  .homepage-mobile-auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  
+  .homepage-mobile-login-button {
+    padding: 8px 16px;
+    background-color: transparent;
+    color: #2563eb;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .homepage-mobile-signup-button {
+    padding: 8px 16px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  /* Hero Section */
+  .homepage-hero-section {
+    padding: 96px 16px;
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: white;
+    text-align: center;
+  }
+  
+  .homepage-hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .homepage-hero-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+  
+  .homepage-hero-subtitle {
+    font-size: 24px;
+    margin-bottom: 32px;
+    color: #dbeafe;
+  }
+  
+  .homepage-hero-button {
+    padding: 16px 32px;
+    background-color: white;
+    color: #2563eb;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+  }
+  
+  .homepage-arrow {
+    margin-left: 8px;
+  }
+  
+  /* Vehicle Categories */
+  .homepage-vehicle-categories {
+    padding: 64px 16px;
+  }
+  
+  .homepage-categories-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .homepage-categories-title {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  
+  .homepage-vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+  }
+  
+  .homepage-vehicle-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .homepage-vehicle-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .homepage-vehicle-image {
+    width: 100%;
+    height: 192px;
+    object-fit: cover;
+  }
+  
+  .homepage-vehicle-details {
+    padding: 16px;
+  }
+  
+  .homepage-vehicle-type {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .homepage-vehicle-description {
+    color: #4b5563;
+    margin-bottom: 16px;
+  }
+  
+  .homepage-view-options-button {
+    padding: 8px 16px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  /* Features Section */
+  .homepage-features-section {
+    padding: 64px 16px;
+    background-color: white;
+  }
+  .homepage-features-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .homepage-features-title {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  
+  .homepage-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+  }
+  
+  .homepage-feature {
+    text-align: center;
+  }
+  
+  .homepage-feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: #2563eb;
+    color: white;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    font-size: 18px;
+  }
+  
+  .homepage-feature-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .homepage-feature-description {
+    color: #4b5563;
+  }
+  
+  /* CTA Section */
+  .homepage-cta-section {
+    padding: 64px 16px;
+    background-color: #f9fafb;
+    text-align: center;
+  }
+  
+  .homepage-cta-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .homepage-cta-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+  
+  .homepage-cta-subtitle {
+    font-size: 20px;
+    color: #4b5563;
+    margin-bottom: 32px;
+  }
+  
+  .homepage-cta-button {
+    padding: 16px 32px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  /* Footer */
+  .homepage-footer {
+    padding: 64px 16px;
+    background-color: #1e293b;
+    color: #cbd5e1;
+  }
+  
+  .homepage-footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px;
+  }
+  
+  .homepage-footer-section {
+    margin-bottom: 24px;
+  }
+  
+  .homepage-footer-heading {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 16px;
+  }
+  
+  .homepage-footer-text {
+    font-size: 14px;
+  }
+  
+  .homepage-footer-links {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .homepage-footer-link {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .homepage-footer-link:hover {
+    color: white;
+  }
+  
+  .homepage-footer-contact {
+    list-style: none;
+    padding: 0;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .homepage-nav-links, .homepage-auth-buttons {
+      display: none;
+    }
+    .homepage-menu-button {
+      display: block;
+    }
+    .homepage-mobile-menu {
+      display: block;
+    }
+    .homepage-logo-image {
+      height: 32px;
+    }
+  }
+
+.homepage-user-name {
+  color: #4b5563;
+  margin-right: 16px;
+  font-weight: 500;
+}
+
+.homepage-logout-button {
+  padding: 8px 16px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.homepage-logout-button:hover {
+  background-color: #dc2626;
+}
+
+.homepage-mobile-user-name {
+  color: #4b5563;
+  padding: 8px;
+  font-weight: 500;
+  display: block;
+}
+
+.homepage-mobile-logout-button {
+  width: 100%;
+  padding: 8px 16px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.homepage-mobile-logout-button:hover {
+  background-color: #dc2626;
+}
+
+html {
+  scroll-behavior: smooth;
+}

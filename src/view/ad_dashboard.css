@@ -1,0 +1,253 @@
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+  color: #1f2937;
+  background-color: #f9fafb;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  background-color: #f9fafb;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.sidebar-open {
+  margin-left: 16rem;
+}
+
+.dashboard-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Header Styles */
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.dashboard-header p {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+/* Stats Cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card-content {
+  padding: 1.5rem;
+}
+
+.stat-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-icon-wrapper {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.stat-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.stat-title {
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+/* Vehicle Type Cards */
+.vehicle-types-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+}
+
+.vehicle-type-card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.vehicle-type-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-card-content {
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.vehicle-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.vehicle-icon-wrapper {
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+
+.vehicle-type-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.vehicle-type-count {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* Color Variations */
+.stat-card-blue {
+  border: 1px solid #dbeafe;
+}
+
+.stat-card-blue .stat-icon-wrapper {
+  background-color: #eff6ff;
+}
+
+.stat-card-blue .stat-icon {
+  color: #2563eb;
+}
+
+.stat-card-green {
+  border: 1px solid #d1fae5;
+}
+
+.stat-card-green .stat-icon-wrapper {
+  background-color: #ecfdf5;
+}
+
+.stat-card-green .stat-icon {
+  color: #10b981;
+}
+
+.stat-card-purple {
+  border: 1px solid #ede9fe;
+}
+
+.stat-card-purple .stat-icon-wrapper {
+  background-color: #f5f3ff;
+}
+
+.stat-card-purple .stat-icon {
+  color: #8b5cf6;
+}
+
+.vehicle-card-blue {
+  border: 1px solid #dbeafe;
+  background-color: #eff6ff;
+}
+
+.vehicle-card-green {
+  border: 1px solid #d1fae5;
+  background-color: #ecfdf5;
+}
+
+.vehicle-card-amber {
+  border: 1px solid #fef3c7;
+  background-color: #fffbeb;
+}
+
+.vehicle-card-purple {
+  border: 1px solid #ede9fe;
+  background-color: #f5f3ff;
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .vehicle-types-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .vehicle-types-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .dashboard-content {
+    padding: 2rem;
+  }
+}
+
