@@ -5,12 +5,12 @@ const libraries = ['places'];
 
 const MapPicker = ({ onLocationSelect, initialLocation, showUserLocation = true }) => {
   const [map, setMap] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState(initialLocation || {
-    lat: 27.7172,
-    lng: 85.3240,
-    address: 'Kathmandu, Nepal'
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [userLocation] = useState({
+    lat: 27.7041,
+    lng: 85.3405,
+    address: 'Old Baneshwor, Kathmandu, Nepal'
   });
-  const [userLocation, setUserLocation] = useState(null);
   const [searchBox, setSearchBox] = useState(null);
   const [directions, setDirections] = useState(null);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -19,6 +19,45 @@ const MapPicker = ({ onLocationSelect, initialLocation, showUserLocation = true 
   const [activeMarker, setActiveMarker] = useState(null);
   const searchInputRef = useRef(null);
 
+  // Get current location on component mount
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          
+          if (window.google && !selectedLocation) {
+            const geocoder = new window.google.maps.Geocoder();
+            geocoder.geocode({ location }, (results, status) => {
+              if (status === 'OK' && results[0]) {
+                const newLocation = {
+                  ...location,
+                  address: results[0].formatted_address
+                };
+                setSelectedLocation(newLocation);
+                onLocationSelect(newLocation);
+              }
+            });
+          }
+        },
+        (error) => {
+          console.error('Error getting current location:', error);
+          // Fallback to Kathmandu if geolocation fails
+          const defaultLocation = {
+            lat: 27.7172,
+            lng: 85.3240,
+            address: 'Kathmandu, Nepal'
+          };
+          setSelectedLocation(defaultLocation);
+          onLocationSelect(defaultLocation);
+        }
+      );
+    }
+  }, [isLoaded, onLocationSelect]);
+
   const mapContainerStyle = {
     width: '100%',
     height: '300px',
@@ -26,42 +65,6 @@ const MapPicker = ({ onLocationSelect, initialLocation, showUserLocation = true 
     borderRadius: '8px',
     boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
   };
-
-  // Get user's current location only if showUserLocation is true
-  const getUserLocation = useCallback(() => {
-    if (showUserLocation && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          setUserLocation(location);
-          
-          if (isLoaded && window.google) {
-            const geocoder = new window.google.maps.Geocoder();
-            geocoder.geocode({ location }, (results, status) => {
-              if (status === 'OK' && results[0]) {
-                setUserLocation({
-                  ...location,
-                  address: results[0].formatted_address
-                });
-              }
-            });
-          }
-        },
-        (error) => {
-          console.error('Error getting user location:', error);
-        }
-      );
-    }
-  }, [isLoaded, showUserLocation]);
-
-  useEffect(() => {
-    if (isLoaded) {
-      getUserLocation();
-    }
-  }, [isLoaded, getUserLocation]);
 
   const onLoad = useCallback((map) => {
     setMap(map);
@@ -256,7 +259,7 @@ const MapPicker = ({ onLocationSelect, initialLocation, showUserLocation = true 
 
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
-          center={selectedLocation}
+          center={selectedLocation || userLocation}
           zoom={15}
           onLoad={onLoad}
           onClick={handleMapClick}
@@ -286,7 +289,7 @@ const MapPicker = ({ onLocationSelect, initialLocation, showUserLocation = true 
               ))}
 
               {/* Show selected location marker if no search results */}
-              {searchResults.length === 0 && (
+              {searchResults.length === 0 && selectedLocation && (
                 <Marker
                   position={selectedLocation}
                   draggable={true}
@@ -298,7 +301,7 @@ const MapPicker = ({ onLocationSelect, initialLocation, showUserLocation = true 
                 />
               )}
 
-              {/* Always show user location marker */}
+              {/* Always show base location marker */}
               {showUserLocation && userLocation && (
                 <Marker
                   position={userLocation}
@@ -317,7 +320,10 @@ const MapPicker = ({ onLocationSelect, initialLocation, showUserLocation = true 
         <div style={{ marginTop: '10px' }}>
           {showUserLocation && userLocation && (
             <button
-              onClick={calculateRoute}
+              onClick={(e) => {
+                e.preventDefault(); // Prevent form submission
+                calculateRoute();
+              }}
               style={{
                 padding: '8px 16px',
                 backgroundColor: isNavigating ? '#4CAF50' : '#2196F3',
@@ -328,7 +334,7 @@ const MapPicker = ({ onLocationSelect, initialLocation, showUserLocation = true 
                 marginRight: '10px'
               }}
             >
-              {isNavigating ? 'Route Shown' : 'Navigate Me'}
+              {isNavigating ? 'Route Shown' : 'Show Route'}
             </button>
           )}
         </div>
@@ -355,7 +361,7 @@ const MapPicker = ({ onLocationSelect, initialLocation, showUserLocation = true 
             borderRadius: '4px',
             fontSize: '14px'
           }}>
-            <p style={{ margin: '5px 0' }}>Your Location: {userLocation.address}</p>
+            <p style={{ margin: '5px 0' }}>Base Location: {userLocation.address}</p>
             <p style={{ margin: '5px 0' }}>Latitude: {userLocation.lat.toFixed(6)}</p>
             <p style={{ margin: '5px 0' }}>Longitude: {userLocation.lng.toFixed(6)}</p>
           </div>

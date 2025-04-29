@@ -9,7 +9,7 @@ const paymentSchema = new mongoose.Schema(
       ref: "PurchasedItem",
       required: true,
     },
-    amount: { type: Number, required: true },
+    totalPrice: { type: Number, required: true },
     dataFromVerificationReq: { type: Object },
     apiQueryFromUser: { type: Object },
     paymentGateway: {

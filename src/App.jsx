@@ -9,6 +9,7 @@ import UserVehicle from './user/user_vehicle';
 import Booking from "./user/booking";
 import Profile from "./user/Profile";
 import Users from "./view/ad_users";
+import PaymentStatus from "./pages/PaymentStatus";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/booking" element={<Booking />} />
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/users" element={<Users/>}/>
+        <Route path="/payment-status" element={<PaymentStatus />} />
       </Routes>
     </Router>
   );

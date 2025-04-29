@@ -8,6 +8,7 @@ import signinRouter from "./routes/signin.js";
 import vehicleRoutes from "./routes/vehicleRoutes.js";
 import profileRouter from "./routes/profile.js";
 import authRoutes from './routes/authRoutes.js';
+import khaltiRouter from './routes/Khalti.js';
 
 // Load environment variables
 dotenv.config();
@@ -18,6 +19,7 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // CORS Configuration
 const corsOptions = {
@@ -85,6 +87,7 @@ app.use("/api/signin", signinRouter);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/profile", profileRouter);
 app.use('/api/auth', authRoutes);
+app.use("/khalti", khaltiRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

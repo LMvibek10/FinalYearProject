@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./booking.css";
 import MapPicker from "../component/MapPicker";
+import axios from 'axios';
 
 const Booking = () => {
   const location = useLocation();
@@ -16,16 +17,7 @@ const Booking = () => {
   const [returnDate, setReturnDate] = useState(new Date(new Date().setDate(new Date().getDate() + 1)));
   const [showPickupTime, setShowPickupTime] = useState(false);
   const [showReturnTime, setShowReturnTime] = useState(false);
-  const [pickupLocation, setPickupLocation] = useState({
-    lat: 27.7172,
-    lng: 85.3240,
-    address: 'Kathmandu, Nepal'
-  });
-  const [dropoffLocation, setDropoffLocation] = useState({
-    lat: 27.7172,
-    lng: 85.3240,
-    address: 'Kathmandu, Nepal'
-  });
+  const [pickupLocation, setPickupLocation] = useState(null);
   const [driverOption, setDriverOption] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalDays, setTotalDays] = useState(1);
@@ -73,17 +65,80 @@ const Booking = () => {
     setShowModal(true);
   };
 
-  const handleConfirmBooking = () => {
-    console.log("Booking submitted:", {
-      vehicle,
-      pickupDate,
-      returnDate,
-      pickupLocation,
-      dropoffLocation,
-      driverOption,
-      totalPrice: calculateTotalPrice()
-    });
-    setShowModal(false);
+  const handleConfirmBooking = async () => {
+    try {
+      // Get user details from localStorage
+      const userDetails = JSON.parse(localStorage.getItem('user'));
+      if (!userDetails) {
+        alert('Please login to continue with booking');
+        navigate('/login');
+        return;
+      }
+
+      if (!pickupLocation) {
+        alert('Please select a pickup location');
+        return;
+      }
+
+      // Calculate total price including driver cost
+      const totalPrice = calculateTotalPrice();
+
+      // Prepare booking data
+      const bookingData = {
+        vehicleId: vehicle._id,
+        totalPrice: totalPrice,
+        website_url: window.location.origin,
+        vehicleDetails: {
+          name: vehicle.name,
+          category: vehicle.category,
+          subcategory: vehicle.subcategory,
+          fuelType: vehicle.fuelType,
+          seatingCapacity: vehicle.seatingCapacity,
+          makeYear: vehicle.makeYear,
+          insideValleyPrice: vehicle.insideValleyPrice,
+          outsideValleyPrice: vehicle.outsideValleyPrice,
+          image: vehicle.image
+        },
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName,
+        email: userDetails.email,
+        phone: userDetails.phone || '',
+        address: userDetails.address || '',
+        userId: userDetails.id,
+        bookingDetails: {
+          pickupDate: pickupDate,
+          returnDate: returnDate,
+          pickupLocation: pickupLocation,
+          isInsideValley: isInsideValley,
+          duration: totalDays,
+          driverOption: driverOption,
+          totalDays: totalDays
+        }
+      };
+
+      // Close the modal first
+      setShowModal(false);
+
+      // Initialize Khalti payment
+      const response = await axios.post(`http://localhost:5000/khalti/initialize-khalti`, bookingData, {
+        headers: {
+          'Authorization': `Bearer ${userDetails.token}`
+        }
+      });
+
+      if (response.data.success) {
+        // Store booking details in localStorage for payment redirect
+        localStorage.setItem('bookingDetails', JSON.stringify(bookingData));
+        
+        // Redirect to Khalti payment URL
+        window.location.href = response.data.payment.payment_url;
+      } else {
+        alert('Failed to initialize payment. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error initializing payment:', error);
+      alert('An error occurred while processing your booking. Please try again.');
+    }
   };
 
   // Generate time slots from 6 AM to 10 PM with 30-minute intervals
@@ -357,20 +412,11 @@ const Booking = () => {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Pickup Location</label>
+                <label className="form-label">Select Location</label>
                 <MapPicker
                   onLocationSelect={(location) => setPickupLocation(location)}
                   initialLocation={pickupLocation}
                   showUserLocation={true}
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Drop-off Location</label>
-                <MapPicker
-                  onLocationSelect={(location) => setDropoffLocation(location)}
-                  initialLocation={dropoffLocation}
-                  showUserLocation={false}
                 />
               </div>
 
