@@ -1,41 +1,79 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserNavbar from "../component/UserNavbar";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./booking.css";
-import LocationSelector from "../component/LocationSelector";
+import MapPicker from "../component/MapPicker";
 
 const Booking = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const vehicle = location.state?.vehicle;
+  const [showModal, setShowModal] = useState(false);
 
   const [pickupDate, setPickupDate] = useState(new Date());
-  const [returnDate, setReturnDate] = useState(new Date());
-  const [pickupLocation, setPickupLocation] = useState("");
-  const [dropoffLocation, setDropoffLocation] = useState("");
+  const [returnDate, setReturnDate] = useState(new Date(new Date().setDate(new Date().getDate() + 1)));
+  const [showPickupTime, setShowPickupTime] = useState(false);
+  const [showReturnTime, setShowReturnTime] = useState(false);
+  const [pickupLocation, setPickupLocation] = useState({
+    lat: 27.7172,
+    lng: 85.3240,
+    address: 'Kathmandu, Nepal'
+  });
+  const [dropoffLocation, setDropoffLocation] = useState({
+    lat: 27.7172,
+    lng: 85.3240,
+    address: 'Kathmandu, Nepal'
+  });
   const [driverOption, setDriverOption] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalDays, setTotalDays] = useState(1);
+  const [isInsideValley, setIsInsideValley] = useState(true);
 
   const driverOptions = [
     { value: "with-driver", label: "With Driver" },
     { value: "without-driver", label: "Without Driver" }
   ];
 
-  const calculateTotalDays = () => {
-    const diffTime = Math.abs(returnDate - pickupDate);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays || 1;
-  };
+  // Calculate total days and price whenever dates or location changes
+  useEffect(() => {
+    const calculateDaysAndPrice = () => {
+      // Create new Date objects and set them to midnight to ignore time
+      const startDate = new Date(pickupDate.getFullYear(), pickupDate.getMonth(), pickupDate.getDate());
+      const endDate = new Date(returnDate.getFullYear(), returnDate.getMonth(), returnDate.getDate());
+      
+      // Calculate the difference in days
+      const timeDiff = endDate.getTime() - startDate.getTime();
+      const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+      
+      // Add 1 to include both pickup and return days
+      const numberOfDays = Math.max(1, daysDiff + 1);
+      
+      // Calculate total price based on location and pricePerDay
+      const basePrice = isInsideValley ? vehicle?.insideValleyPrice : vehicle?.outsideValleyPrice;
+      const calculatedPrice = (basePrice || 0) * numberOfDays;
+      
+      setTotalDays(numberOfDays);
+      setTotalPrice(calculatedPrice);
+    };
+
+    calculateDaysAndPrice();
+  }, [pickupDate, returnDate, vehicle?.insideValleyPrice, vehicle?.outsideValleyPrice, isInsideValley]);
 
   const calculateTotalPrice = () => {
-    const basePrice = vehicle.pricePerDay * calculateTotalDays();
-    const driverCost =
-      driverOption === "with-driver" ? 50 * calculateTotalDays() : 0;
-    return basePrice + driverCost;
+    const basePrice = isInsideValley ? vehicle.insideValleyPrice : vehicle.outsideValleyPrice;
+    const totalBasePrice = basePrice * totalDays;
+    const driverCost = driverOption === "with-driver" ? 50 * totalDays : 0;
+    return totalBasePrice + driverCost;
   };
 
-  const handleBooking = () => {
+  const handleContinue = (e) => {
+    e.preventDefault();
+    setShowModal(true);
+  };
+
+  const handleConfirmBooking = () => {
     console.log("Booking submitted:", {
       vehicle,
       pickupDate,
@@ -45,6 +83,76 @@ const Booking = () => {
       driverOption,
       totalPrice: calculateTotalPrice()
     });
+    setShowModal(false);
+  };
+
+  // Generate time slots from 6 AM to 10 PM with 30-minute intervals
+  const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 6; hour <= 22; hour++) {
+      for (let minute of [0, 30]) {
+        const time = new Date();
+        time.setHours(hour, minute, 0);
+        slots.push(time);
+      }
+    }
+    return slots;
+  };
+
+  const timeSlots = generateTimeSlots();
+
+  const formatTime = (date) => {
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
+  // Handle date changes
+  const handleDateChange = (date, isPickup) => {
+    const newDate = new Date(date);
+    
+    if (isPickup) {
+      // Keep the existing time when changing the date
+      newDate.setHours(pickupDate.getHours(), pickupDate.getMinutes());
+      setPickupDate(newDate);
+      
+      // If return date is before pickup date, update return date to next day
+      const returnDateMidnight = new Date(returnDate.getFullYear(), returnDate.getMonth(), returnDate.getDate());
+      const newDateMidnight = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate());
+      
+      if (returnDateMidnight <= newDateMidnight) {
+        const nextDay = new Date(newDate);
+        nextDay.setDate(nextDay.getDate() + 1);
+        nextDay.setHours(returnDate.getHours(), returnDate.getMinutes());
+        setReturnDate(nextDay);
+      }
+    } else {
+      // Keep the existing time when changing the date
+      newDate.setHours(returnDate.getHours(), returnDate.getMinutes());
+      
+      // Only update if the new return date is after pickup date
+      const pickupDateMidnight = new Date(pickupDate.getFullYear(), pickupDate.getMonth(), pickupDate.getDate());
+      const newDateMidnight = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate());
+      
+      if (newDateMidnight >= pickupDateMidnight) {
+        setReturnDate(newDate);
+      }
+    }
+  };
+
+  const handleTimeSelect = (time, isPickup) => {
+    const newDate = new Date(isPickup ? pickupDate : returnDate);
+    newDate.setHours(time.getHours(), time.getMinutes());
+    
+    if (isPickup) {
+      setPickupDate(newDate);
+      setShowPickupTime(false);
+    } else {
+      setReturnDate(newDate);
+      setShowReturnTime(false);
+    }
   };
 
   return (
@@ -89,64 +197,180 @@ const Booking = () => {
                 </div>
               </div>
 
-              <div className="price-section">
-                <div className="price-container">
-                  <span className="price">NPR {vehicle?.pricePerDay}</span>
-                  <span className="price-period">/day</span>
-                </div>
-                <div className="total-price">
-                  <div className="total-days">
-                    Total for {calculateTotalDays()} days
+              <div className="summary-price-details">
+                <div className="price-option">
+                  <div className="price-header">Inside Valley</div>
+                  <div className="price-amount">
+                    <span className="currency">NPR</span>
+                    <span className="amount">{vehicle?.insideValleyPrice?.toLocaleString()}</span>
+                    <span className="duration">/day</span>
                   </div>
-                  <div className="total-amount">
-                    NPR {calculateTotalPrice()}
+                </div>
+                <div className="price-option">
+                  <div className="price-header">Outside Valley</div>
+                  <div className="price-amount">
+                    <span className="currency">NPR</span>
+                    <span className="amount">{vehicle?.outsideValleyPrice?.toLocaleString()}</span>
+                    <span className="duration">/day</span>
                   </div>
                 </div>
               </div>
+
+              
+{/* 
+              <div className="price-breakdown">
+                <h3>Price Breakdown</h3>
+                <div className="breakdown-item">
+                  <span>Base Price (Inside Valley):</span>
+                  <span>NPR {vehicle?.insideValleyPrice?.toLocaleString()}/day</span>
+                </div>
+                <div className="breakdown-item">
+                  <span>Base Price (Outside Valley):</span>
+                  <span>NPR {vehicle?.outsideValleyPrice?.toLocaleString()}/day</span>
+                </div>
+                <div className="breakdown-item">
+                  <span>Selected Location:</span>
+                  <span>{isInsideValley ? 'Inside Valley' : 'Outside Valley'}</span>
+                </div>
+                <div className="breakdown-item">
+                  <span>Number of Days:</span>
+                  <span>{totalDays}</span>
+                </div>
+                <div className="breakdown-item">
+                  <span>Driver Option:</span>
+                  <span>{driverOption === "with-driver" ? "With Driver (+NPR 50/day)" : "Without Driver"}</span>
+                </div>
+                <div className="breakdown-item total">
+                  <span>Total Amount:</span>
+                  <span>NPR {totalPrice.toLocaleString()}</span>
+                </div>
+              </div> */}
             </div>
           </div>
 
           {/* Booking Form Section */}
           <div className="booking-form">
             <h2>Booking Details</h2>
-            <form>
+            <form onSubmit={handleContinue}>
               <div className="form-group">
-                <label className="form-label">Pickup Date & Time</label>
-                <DatePicker
-                  selected={pickupDate}
-                  onChange={(date) => setPickupDate(date)}
-                  showTimeSelect
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                  className="form-input"
+                <label className="form-label">Rental Location</label>
+                <select
+                  value={isInsideValley ? "inside" : "outside"}
+                  onChange={(e) => setIsInsideValley(e.target.value === "inside")}
+                  className="form-select"
+                >
+                  <option value="inside">Inside Kathmandu Valley</option>
+                  <option value="outside">Outside Kathmandu Valley</option>
+                </select>
+              </div>
+
+              <div className="date-time-picker-container">
+                <label className="date-time-label">Pickup Date & Time</label>
+                <div className="date-time-picker-wrapper">
+                  <div className="date-picker-container">
+                    <DatePicker
+                      selected={pickupDate}
+                      onChange={(date) => handleDateChange(date, true)}
+                      dateFormat="MMMM d, yyyy"
+                      minDate={new Date()}
+                      className="date-time-input"
+                    />
+                  </div>
+                  <div className="time-picker-container">
+                    <div className="custom-time-picker" onClick={() => setShowPickupTime(!showPickupTime)}>
+                      {pickupDate.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                      })}
+                    </div>
+                    {showPickupTime && (
+                      <div className="time-list">
+                        {generateTimeSlots().map((time, index) => (
+                          <div
+                            key={index}
+                            className="time-list-item"
+                            onClick={() => {
+                              const newDate = new Date(pickupDate);
+                              newDate.setHours(time.getHours(), time.getMinutes());
+                              setPickupDate(newDate);
+                              setShowPickupTime(false);
+                            }}
+                          >
+                            {time.toLocaleTimeString('en-US', {
+                              hour: 'numeric',
+                              minute: '2-digit',
+                              hour12: true
+                            })}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="date-time-picker-container">
+                <label className="date-time-label">Return Date & Time</label>
+                <div className="date-time-picker-wrapper">
+                  <div className="date-picker-container">
+                    <DatePicker
+                      selected={returnDate}
+                      onChange={(date) => handleDateChange(date, false)}
+                      dateFormat="MMMM d, yyyy"
+                      minDate={pickupDate}
+                      className="date-time-input"
+                    />
+                  </div>
+                  <div className="time-picker-container">
+                    <div className="custom-time-picker" onClick={() => setShowReturnTime(!showReturnTime)}>
+                      {returnDate.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                      })}
+                    </div>
+                    {showReturnTime && (
+                      <div className="time-list">
+                        {generateTimeSlots().map((time, index) => (
+                          <div
+                            key={index}
+                            className="time-list-item"
+                            onClick={() => {
+                              const newDate = new Date(returnDate);
+                              newDate.setHours(time.getHours(), time.getMinutes());
+                              setReturnDate(newDate);
+                              setShowReturnTime(false);
+                            }}
+                          >
+                            {time.toLocaleTimeString('en-US', {
+                              hour: 'numeric',
+                              minute: '2-digit',
+                              hour12: true
+                            })}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Pickup Location</label>
+                <MapPicker
+                  onLocationSelect={(location) => setPickupLocation(location)}
+                  initialLocation={pickupLocation}
+                  showUserLocation={true}
                 />
               </div>
 
               <div className="form-group">
-                <label className="form-label">Return Date & Time</label>
-                <DatePicker
-                  selected={returnDate}
-                  onChange={(date) => setReturnDate(date)}
-                  showTimeSelect
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                  className="form-input"
-                />
-              </div>
-
-              <div className="form-group">
-                <LocationSelector
-                  label="Pickup Location"
-                  value={pickupLocation}
-                  onChange={setPickupLocation}
-                  placeholder="Enter pickup location"
-                />
-              </div>
-
-              <div className="form-group">
-                <LocationSelector
-                  label="Drop-off Location"
-                  value={dropoffLocation}
-                  onChange={setDropoffLocation}
-                  placeholder="Enter drop-off location"
+                <label className="form-label">Drop-off Location</label>
+                <MapPicker
+                  onLocationSelect={(location) => setDropoffLocation(location)}
+                  initialLocation={dropoffLocation}
+                  showUserLocation={false}
                 />
               </div>
 
@@ -166,17 +390,52 @@ const Booking = () => {
                 </select>
               </div>
 
-              <button
-                type="button"
-                onClick={handleBooking}
-                className="submit-button"
-              >
-                Confirm Booking
+              <button type="submit" className="submit-button">
+                Continue
               </button>
             </form>
           </div>
         </div>
       </div>
+
+      {/* Price Breakdown Modal */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2>Booking Summary</h2>
+              <button className="close-button" onClick={() => setShowModal(false)}>×</button>
+            </div>
+            <div className="price-breakdown">
+              <h3>Price Breakdown</h3>
+              <div className="breakdown-item">
+                <span>Base Price ({isInsideValley ? 'Inside' : 'Outside'} Valley):</span>
+                <span>NPR {(isInsideValley ? vehicle?.insideValleyPrice : vehicle?.outsideValleyPrice)?.toLocaleString()}/day</span>
+              </div>
+              <div className="breakdown-item">
+                <span>Selected Location:</span>
+                <span>{isInsideValley ? 'Inside Valley' : 'Outside Valley'}</span>
+              </div>
+              <div className="breakdown-item">
+                <span>Number of Days:</span>
+                <span>{totalDays}</span>
+              </div>
+              <div className="breakdown-item">
+                <span>Driver Option:</span>
+                <span>{driverOption === "with-driver" ? "With Driver (+NPR 50/day)" : "Without Driver"}</span>
+              </div>
+              <div className="breakdown-item total">
+                <span>Total Amount:</span>
+                <span>NPR {totalPrice.toLocaleString()}</span>
+              </div>
+            </div>
+            <div className="modal-footer">
+           
+              <button className="confirm-button" onClick={handleConfirmBooking}>Confirm Booking</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

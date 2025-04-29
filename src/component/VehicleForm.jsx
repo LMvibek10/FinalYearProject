@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Upload, Car } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -9,14 +9,16 @@ const VehicleForm = ({ onClose, onAddVehicle, vehicle }) => {
     name: vehicle?.name || '',
     category: vehicle?.category || '',
     subcategory: vehicle?.subcategory || '',
-    pricePerDay: vehicle?.pricePerDay || '',
+    insideValleyPrice: vehicle?.insideValleyPrice || '',
+    outsideValleyPrice: vehicle?.outsideValleyPrice || '',
     status: vehicle?.status || 'Available',
-    image: vehicle?.image || null,
+    image: null,
     fuelType: vehicle?.fuelType || '',
     seatingCapacity: vehicle?.seatingCapacity || '',
     makeYear: vehicle?.makeYear || ''
   });
-
+  
+  const [imagePreview, setImagePreview] = useState(vehicle?.image || null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Add subcategory options mapping
@@ -29,12 +31,22 @@ const VehicleForm = ({ onClose, onAddVehicle, vehicle }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-      // Reset subcategory when category changes
-      ...(name === 'category' && { subcategory: '' })
-    }));
+    if (name === 'insideValleyPrice' || name === 'outsideValleyPrice') {
+      // Only allow positive numbers
+      const numValue = parseFloat(value);
+      if (numValue < 0) return;
+      
+      setFormData(prev => ({
+        ...prev,
+        [name]: value // Keep as string for input field
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value,
+        ...(name === 'category' && { subcategory: '' })
+      }));
+    }
   };
 
   const handleImageChange = async (e) => {
@@ -44,16 +56,16 @@ const VehicleForm = ({ onClose, onAddVehicle, vehicle }) => {
         toast.error('Image size should be less than 5MB');
         return;
       }
-      
+
       try {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setFormData(prev => ({
-            ...prev,
-            image: file  // Store the file object instead of base64
-          }));
-        };
-        reader.readAsDataURL(file);
+        setFormData(prev => ({
+          ...prev,
+          image: file
+        }));
+
+        // Create preview URL
+        const previewUrl = URL.createObjectURL(file);
+        setImagePreview(previewUrl);
       } catch (error) {
         toast.error('Error processing image');
         console.error('Error processing image:', error);
@@ -63,11 +75,11 @@ const VehicleForm = ({ onClose, onAddVehicle, vehicle }) => {
 
   const validateForm = () => {
     if (!formData.name || !formData.category || !formData.subcategory || 
-        !formData.pricePerDay || !formData.status) {
+        !formData.insideValleyPrice || !formData.outsideValleyPrice || !formData.status) {
       toast.error('Please fill in all required fields');
       return false;
     }
-    if (!formData.image) {
+    if (!formData.image && !vehicle?.image) {
       toast.error('Please upload a vehicle image');
       return false;
     }
@@ -83,21 +95,23 @@ const VehicleForm = ({ onClose, onAddVehicle, vehicle }) => {
     try {
       const vehicleData = new FormData();
       
+      // Convert price strings to numbers and round them
+      const dataToSend = {
+        ...formData,
+        insideValleyPrice: Math.round(parseFloat(formData.insideValleyPrice)),
+        outsideValleyPrice: Math.round(parseFloat(formData.outsideValleyPrice))
+      };
+      
       // Append all form data except image
-      Object.keys(formData).forEach(key => {
-        if (key !== 'image' && formData[key] !== null && formData[key] !== '') {
-          vehicleData.append(key, formData[key]);
+      Object.keys(dataToSend).forEach(key => {
+        if (key !== 'image' && dataToSend[key] !== null && dataToSend[key] !== '') {
+          vehicleData.append(key, dataToSend[key]);
         }
       });
 
-      // Append image last
-      if (formData.image) {
+      // Append image only if a new one is selected
+      if (formData.image instanceof File) {
         vehicleData.append('image', formData.image);
-      }
-
-      // Log the FormData contents for debugging
-      for (let pair of vehicleData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
       }
 
       let response;
@@ -136,6 +150,15 @@ const VehicleForm = ({ onClose, onAddVehicle, vehicle }) => {
       setIsSubmitting(false);
     }
   };
+
+  // Cleanup function for image preview URL
+  useEffect(() => {
+    return () => {
+      if (imagePreview && imagePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
 
   return (
     <div className="vehicle-form-overlay">
@@ -202,16 +225,30 @@ const VehicleForm = ({ onClose, onAddVehicle, vehicle }) => {
             </div>
 
             <div className="vehicle-form-field">
-              <label className="vehicle-form-label">Price per Day*</label>
+              <label className="vehicle-form-label">Inside Valley Price (NPR/day)*</label>
               <input
                 type="number"
-                name="pricePerDay"
-                value={formData.pricePerDay}
+                name="insideValleyPrice"
+                value={formData.insideValleyPrice}
                 onChange={handleChange}
                 className="vehicle-form-input"
                 required
                 min="0"
-                placeholder="Enter price per day"
+                placeholder="Enter price per day inside valley"
+              />
+            </div>
+
+            <div className="vehicle-form-field">
+              <label className="vehicle-form-label">Outside Valley Price (NPR/day)*</label>
+              <input
+                type="number"
+                name="outsideValleyPrice"
+                value={formData.outsideValleyPrice}
+                onChange={handleChange}
+                className="vehicle-form-input"
+                required
+                min="0"
+                placeholder="Enter price per day outside valley"
               />
             </div>
 
@@ -274,20 +311,24 @@ const VehicleForm = ({ onClose, onAddVehicle, vehicle }) => {
             </div>
 
             <div className="vehicle-form-image-upload">
-              <label>
-                <Upload />
-                <p>Upload vehicle image* (Max 5MB)</p>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
+              <label className="image-upload-label">
+                <div className="upload-placeholder">
+                  <Upload size={24} />
+                  <p>Upload vehicle image* (Max 5MB)</p>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: 'none' }}
+                  />
+                </div>
               </label>
-              {formData.image && (
+              {imagePreview && (
                 <div className="vehicle-form-image-preview">
                   <img
-                    src={formData.image}
+                    src={imagePreview}
                     alt="Vehicle preview"
+                    className="preview-image"
                   />
                 </div>
               )}

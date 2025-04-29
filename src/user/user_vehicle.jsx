@@ -124,9 +124,23 @@ const UserVehicle = () => {
                 <div className="divider"></div>
 
                 <div className="price-action">
-                  <div className="price-container">
-                    <span className="price">NPR {vehicle.pricePerDay}</span>
-                    <span className="price-period">/day</span>
+                  <div className="price-details">
+                    <div className="price-option">
+                      <div className="price-header">Inside Valley</div>
+                      <div className="price-amount">
+                        <span className="currency">NPR</span>
+                        <span className="amount">{vehicle.insideValleyPrice?.toLocaleString()}</span>
+                        <span className="duration">/day</span>
+                      </div>
+                    </div>
+                    <div className="price-option">
+                      <div className="price-header">Outside Valley</div>
+                      <div className="price-amount">
+                        <span className="currency">NPR</span>
+                        <span className="amount">{vehicle.outsideValleyPrice?.toLocaleString()}</span>
+                        <span className="duration">/day</span>
+                      </div>
+                    </div>
                   </div>
                   <button 
                     className="rent-btn"

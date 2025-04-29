@@ -17,7 +17,8 @@ const VehicleTable = ({ vehicles, onDelete, onEdit }) => {
             <th>Vehicle</th>
             <th>Category</th>
             <th>Status</th>
-            <th>Price/Day</th>
+            <th>Inside Valley Price</th>
+            <th>Outside Valley Price</th>
             <th>Rating</th>
             <th>Actions</th>
           </tr>
@@ -39,7 +40,8 @@ const VehicleTable = ({ vehicles, onDelete, onEdit }) => {
                 {/* Displaying Status */}
                 <span className="ad-vm-status">{vehicle.status}</span>
               </td>
-              <td>NPR {vehicle.pricePerDay}</td>
+              <td>NPR {vehicle.insideValleyPrice?.toLocaleString()}</td>
+              <td>NPR {vehicle.outsideValleyPrice?.toLocaleString()}</td>
               <td>{vehicle.rating}</td>
               <td>
                 {/* Action buttons */}

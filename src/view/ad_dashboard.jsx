@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Calendar, Car, CheckCircle2 } from "lucide-react"
+import { Calendar, Car, CheckCircle2, DollarSign } from "lucide-react"
 import axios from "axios"
 import Sidebar from "../component/ad_sidebar"
 import "./ad_dashboard.css"
@@ -18,6 +18,8 @@ const Dashboard = () => {
     totalVehicles: 0,
     activeRentals: 0,
     availableVehicles: 0,
+    averageInsidePrice: 0,
+    averageOutsidePrice: 0,
     categoryCount: {
       Car: 0,
       Bike: 0,
@@ -40,6 +42,12 @@ const Dashboard = () => {
       const activeRentals = vehicles.filter((v) => v.status === "Rented").length
       const availableVehicles = vehicles.filter((v) => v.status === "Available").length
 
+      // Calculate average prices
+      const totalInsidePrice = vehicles.reduce((sum, v) => sum + (v.insideValleyPrice || 0), 0)
+      const totalOutsidePrice = vehicles.reduce((sum, v) => sum + (v.outsideValleyPrice || 0), 0)
+      const averageInsidePrice = totalVehicles ? Math.round(totalInsidePrice / totalVehicles) : 0
+      const averageOutsidePrice = totalVehicles ? Math.round(totalOutsidePrice / totalVehicles) : 0
+
       // Calculate category counts
       const categoryCount = {
         Car: vehicles.filter((v) => v.category === "Car").length,
@@ -52,6 +60,8 @@ const Dashboard = () => {
         totalVehicles,
         activeRentals,
         availableVehicles,
+        averageInsidePrice,
+        averageOutsidePrice,
         categoryCount,
       })
     } catch (error) {
@@ -77,6 +87,18 @@ const Dashboard = () => {
       title: "Available",
       value: dashboardData.availableVehicles,
       className: "stat-card-purple",
+    },
+    {
+      icon: <DollarSign className="stat-icon" />,
+      title: "Avg. Inside Valley Price",
+      value: `NPR ${dashboardData.averageInsidePrice.toLocaleString()}`,
+      className: "stat-card-amber",
+    },
+    {
+      icon: <DollarSign className="stat-icon" />,
+      title: "Avg. Outside Valley Price",
+      value: `NPR ${dashboardData.averageOutsidePrice.toLocaleString()}`,
+      className: "stat-card-red",
     },
   ]
 

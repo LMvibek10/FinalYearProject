@@ -174,6 +174,10 @@
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
 }
 
 .booking-form h2 {
@@ -185,6 +189,7 @@
 
 .form-group {
   margin-bottom: 24px;
+  width: 100%;
 }
 
 /* UPDATED LABEL SELECTOR */
@@ -242,44 +247,378 @@
 }
 
 /* Date Picker Customization */
+.date-time-picker-container {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.date-time-picker-wrapper {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.date-picker-container {
+  flex: 2;
+  width: 100%;
+}
+
+.time-picker-container {
+  flex: 1;
+  min-width: 120px;
+}
+
 .react-datepicker-wrapper {
   width: 100%;
 }
 
+.react-datepicker__input-container {
+  width: 100%;
+}
+
 .react-datepicker {
-  font-family: inherit;
+  font-family: 'Arial', sans-serif;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  border: 1px solid #d1d5db;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .react-datepicker__header {
-  background-color: #f3f4f6;
-  border-bottom: 1px solid #d1d5db;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  padding-top: 10px;
+}
+
+.react-datepicker__month {
+  margin: 0.4em;
+}
+
+.react-datepicker__day {
+  width: 2.7em;
+  line-height: 2.7em;
+  margin: 0.166em;
+  border-radius: 50%;
+}
+
+.react-datepicker__day:hover {
+  background-color: #f0f0f0;
 }
 
 .react-datepicker__day--selected {
-  background-color: #2563eb;
-}
-
-.react-datepicker__day--keyboard-selected {
-  background-color: #2563eb;
+  background-color: #4a90e2 !important;
+  color: white;
 }
 
 .react-datepicker__time-container {
-  border-left: 1px solid #d1d5db;
+  border-left: 1px solid #e0e0e0;
 }
 
-.react-datepicker__time-container .react-datepicker__time {
+.date-time-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
   background-color: white;
+  cursor: pointer;
+  height: 45px;
 }
 
-.react-datepicker__time-container .react-datepicker__time-box {
-  width: 100px;
+.custom-time-picker {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  height: 45px;
 }
 
-.react-datepicker__time-container .react-datepicker__time-list-item--selected {
+.form-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  height: 45px;
+}
+
+.date-time-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #1f2937;
+  font-size: 14px;
+}
+
+.time-list {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.time-list-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.time-list-item:hover {
+  background-color: #f3f4f6;
+}
+
+.price-breakdown {
+  margin-top: 24px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.price-breakdown h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+}
+
+.breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.breakdown-item:last-child {
+  border-bottom: none;
+}
+
+.breakdown-item span:first-child {
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.breakdown-item span:last-child {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.breakdown-item.total {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.breakdown-item.total span {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.summary-price-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.summary-price-details .price-option {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: all 0.2s ease;
+}
+
+.summary-price-details .price-option:hover {
+  background: #fff;
+  border-color: #4070f4;
+  box-shadow: 0 2px 8px rgba(64, 112, 244, 0.1);
+}
+
+.summary-price-details .price-header {
+  color: #495057;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.summary-price-details .price-amount {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.summary-price-details .currency {
+  color: #4070f4;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.summary-price-details .amount {
+  color: #2557a7;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.summary-price-details .duration {
+  color: #6c757d;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.selected-price-summary {
+  background: #f0f7ff;
+  border: 1px solid #cce5ff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.selected-price-summary .total-days {
+  color: #495057;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.selected-price-summary .total-amount {
+  color: #2557a7;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 0;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1a1a1a;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.close-button:hover {
+  color: #1a1a1a;
+}
+
+.modal-footer {
+  padding: 20px 24px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancel-button {
+  padding: 10px 20px;
+  border: 1px solid #e5e7eb;
+  background-color: white;
+  color: #4b5563;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-button:hover {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.confirm-button {
+  padding: 10px 20px;
   background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirm-button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* Update existing price breakdown styles for modal */
+.modal-content .price-breakdown {
+  margin: 0;
+  padding: 24px;
+  background-color: white;
+  border: none;
+  border-radius: 0;
+}
+
+.modal-content .breakdown-item {
+  padding: 12px 0;
+}
+
+.modal-content .breakdown-item.total {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px solid #e5e7eb;
 }
