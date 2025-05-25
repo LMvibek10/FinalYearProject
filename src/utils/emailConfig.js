@@ -4,70 +4,68 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
-console.log('Email configuration loaded:', {
-  user: process.env.EMAIL_USER,
+// Log environment variables (without exposing the password)
+console.log('Email configuration:', {
+  hasUser: !!process.env.EMAIL_USER,
   hasPassword: !!process.env.EMAIL_PASSWORD
 });
 
-// Create transporter with more detailed configuration
+// Create transporter with Gmail SMTP
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
+    user: 'np03cs4s230035@heraldcollege.edu.np',
+    pass: 'vuwc lqrs iefh orin'
   },
   tls: {
     rejectUnauthorized: false
   }
 });
 
-// Verify transporter configuration
-transporter.verify((error, success) => {
+// Test the connection
+transporter.verify(function(error, success) {
   if (error) {
-    console.error('SMTP connection error:', error);
+    console.error('SMTP Connection Error:', error);
   } else {
-    console.log('SMTP server is ready to send emails');
+    console.log('SMTP Server is ready to send emails');
   }
 });
 
 export const sendOTPEmail = async (email, otp) => {
-  console.log('Attempting to send email to:', email);
-  
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
-    console.error('Email configuration is missing');
-    return false;
-  }
-
-  const mailOptions = {
-    from: `"RentEase" <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: 'Your OTP for RentEase Signup',
-    html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Welcome to RentEase!</h2>
-        <p>Your OTP for account verification is:</p>
-        <h1 style="color: #4CAF50; font-size: 32px; letter-spacing: 5px;">${otp}</h1>
-        <p>This OTP will expire in 10 minutes.</p>
-        <p>If you didn't request this OTP, please ignore this email.</p>
-      </div>
-    `
-  };
-
   try {
-    console.log('Sending email with options:', {
-      from: mailOptions.from,
-      to: mailOptions.to,
-      subject: mailOptions.subject
-    });
+    console.log('Starting email send process...');
     
+    const mailOptions = {
+      from: {
+        name: 'RentEase',
+        address: 'rentease.app@gmail.com' // Replace with your Gmail
+      },
+      to: email,
+      subject: 'Your OTP for RentEase Signup',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>Welcome to RentEase!</h2>
+          <p>Your OTP for account verification is:</p>
+          <h1 style="color: #4CAF50; font-size: 32px; letter-spacing: 5px;">${otp}</h1>
+          <p>This OTP will expire in 10 minutes.</p>
+          <p>If you didn't request this OTP, please ignore this email.</p>
+        </div>
+      `
+    };
+
+    console.log('Attempting to send email to:', email);
     const info = await transporter.sendMail(mailOptions);
     console.log('Email sent successfully:', info.messageId);
     return true;
   } catch (error) {
-    console.error('Error sending email:', error);
-    if (error.code === 'EAUTH') {
-      console.error('Authentication failed. Please check your email credentials.');
-    }
+    console.error('Detailed error sending email:', {
+      message: error.message,
+      code: error.code,
+      command: error.command,
+      stack: error.stack
+    });
     return false;
   }
 };

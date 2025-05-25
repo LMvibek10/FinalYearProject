@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState({
     totalVehicles: 0,
     activeRentals: 0,
+    bookedVehicles: 0,
     availableVehicles: 0,
     averageInsidePrice: 0,
     averageOutsidePrice: 0,
@@ -30,6 +31,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchDashboardData()
+    // Set up real-time updates every 10 seconds
+    const interval = setInterval(fetchDashboardData, 10000)
+    return () => clearInterval(interval)
   }, [])
 
   const fetchDashboardData = async () => {
@@ -39,7 +43,8 @@ const Dashboard = () => {
 
       // Calculate statistics
       const totalVehicles = vehicles.length
-      const activeRentals = vehicles.filter((v) => v.status === "Rented").length
+      const activeRentals = vehicles.filter((v) => v.status === "Booked").length
+      const bookedVehicles = vehicles.filter((v) => v.status === "Booked").length
       const availableVehicles = vehicles.filter((v) => v.status === "Available").length
 
       // Calculate average prices
@@ -59,6 +64,7 @@ const Dashboard = () => {
       setDashboardData({
         totalVehicles,
         activeRentals,
+        bookedVehicles,
         availableVehicles,
         averageInsidePrice,
         averageOutsidePrice,
@@ -78,7 +84,7 @@ const Dashboard = () => {
     },
     {
       icon: <Calendar className="stat-icon" />,
-      title: "Active Rentals",
+      title: "Active Rentals (Booked)",
       value: dashboardData.activeRentals,
       className: "stat-card-green",
     },
@@ -89,13 +95,11 @@ const Dashboard = () => {
       className: "stat-card-purple",
     },
     {
-      icon: <DollarSign className="stat-icon" />,
       title: "Avg. Inside Valley Price",
       value: `NPR ${dashboardData.averageInsidePrice.toLocaleString()}`,
       className: "stat-card-amber",
     },
     {
-      icon: <DollarSign className="stat-icon" />,
       title: "Avg. Outside Valley Price",
       value: `NPR ${dashboardData.averageOutsidePrice.toLocaleString()}`,
       className: "stat-card-red",

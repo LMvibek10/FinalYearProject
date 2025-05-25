@@ -10,6 +10,11 @@ import Booking from "./user/booking";
 import Profile from "./user/Profile";
 import Users from "./view/ad_users";
 import PaymentStatus from "./pages/PaymentStatus";
+import UserRating from "./pages/UserRating";
+import AdminNotifications from "./component/ad_notification";
+import BookingWaiting from "./pages/BookingWaiting";
+import UserBookings from "./pages/UserBookings";
+import axios from 'axios';
 
 function App() {
   return (
@@ -25,6 +30,10 @@ function App() {
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/users" element={<Users/>}/>
         <Route path="/payment-status" element={<PaymentStatus />} />
+        <Route path="/user_rating" element={<UserRating />} />
+        <Route path="/notifications" element={<AdminNotifications />} />
+        <Route path="/booking-waiting" element={<BookingWaiting />} />
+        <Route path="/user/bookings" element={<UserBookings />} />
       </Routes>
     </Router>
   );

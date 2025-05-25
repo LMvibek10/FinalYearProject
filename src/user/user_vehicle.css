@@ -324,9 +324,8 @@
 
 .price-action {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 20px;
+  flex-direction: column;
+  gap: 15px;
   margin-top: 16px;
 }
 
@@ -375,6 +374,32 @@
   font-weight: 400;
 }
 
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: stretch;
+}
+
+.rate-btn {
+  background-color: #fbbf24;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.rate-btn:hover {
+  background-color: #f59e0b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
 .rent-btn {
   background-color: #4070f4;
   color: white;
@@ -386,13 +411,26 @@
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
-  align-self: flex-end;
 }
 
 .rent-btn:hover {
   background-color: #2557a7;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(37, 87, 167, 0.2);
+}
+
+.rent-btn.unavailable {
+  background-color: #6c757d;
+  color: #ffffff;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.rent-btn.unavailable:hover {
+  background-color: #6c757d;
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
 /* Responsive adjustments */

@@ -9,6 +9,8 @@ import vehicleRoutes from "./routes/vehicleRoutes.js";
 import profileRouter from "./routes/profile.js";
 import authRoutes from './routes/authRoutes.js';
 import khaltiRouter from './routes/Khalti.js';
+import ratingRoutes from './routes/ratingRoutes.js';
+import bookingRequestRoutes from './routes/bookingRequestRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -88,6 +90,8 @@ app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/profile", profileRouter);
 app.use('/api/auth', authRoutes);
 app.use("/khalti", khaltiRouter);
+app.use('/api/ratings', ratingRoutes);
+app.use('/api/booking-requests', bookingRequestRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

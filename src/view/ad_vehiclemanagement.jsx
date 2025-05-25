@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Search, Plus, ChevronDown } from "lucide-react";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import axios from "axios";
 import "./ad_vehiclemanagement.css"; // Import the CSS file
 import VehicleForm from "../component/VehicleForm"; // Import the VehicleForm component
@@ -38,7 +38,9 @@ const VehicleTable = ({ vehicles, onDelete, onEdit }) => {
               <td>{vehicle.category}</td>
               <td>
                 {/* Displaying Status */}
-                <span className="ad-vm-status">{vehicle.status}</span>
+                <span className={`ad-vm-status ad-vm-status-${vehicle.status.toLowerCase()}`}>
+                  {vehicle.status}
+                </span>
               </td>
               <td>NPR {vehicle.insideValleyPrice?.toLocaleString()}</td>
               <td>NPR {vehicle.outsideValleyPrice?.toLocaleString()}</td>
@@ -116,7 +118,7 @@ const VehicleManagement = () => {
         });
     } else {
       // If not confirmed, do nothing (deletion is canceled)
-      toast.info("Vehicle deletion canceled");
+      toast("Vehicle deletion canceled");
     }
   };
   

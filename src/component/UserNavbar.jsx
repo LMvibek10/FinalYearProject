@@ -45,12 +45,6 @@ const UserNavbar = () => {
         >
           Profile
         </Link>
-        <Link 
-          to="/user/wallet" 
-          className={`nav-link ${location.pathname === '/user/wallet' ? 'active' : ''}`}
-        >
-          Wallet
-        </Link>
       </div>
       <div className="nav-actions">
         <div className="user-profile">

@@ -179,6 +179,8 @@ router.get("/complete-khalti-payment", async (req, res) => {
         amountInNPR,
         originalAmount: amount
       });
+      console.log(`Redirecting to frontend status page with status=failed and message=${encodeURIComponent("Payment verification failed")}`);
+      console.log(`Generated redirect URL: ${process.env.FRONTEND_URI.replace(/\/$/, '')}/payment-status?status=failed&message=${encodeURIComponent("Payment verification failed")}`);
       return res.redirect(`${process.env.FRONTEND_URI.replace(/\/$/, '')}/payment-status?status=failed&message=${encodeURIComponent("Payment verification failed")}`);
     }
 
@@ -186,6 +188,8 @@ router.get("/complete-khalti-payment", async (req, res) => {
     const purchasedItemData = await BookedItem.findById(purchase_order_id);
     if (!purchasedItemData) {
       console.error("Purchase record not found:", purchase_order_id);
+      console.log(`Redirecting to frontend status page with status=failed and message=${encodeURIComponent("Purchase record not found")}`);
+      console.log(`Generated redirect URL: ${process.env.FRONTEND_URI.replace(/\/$/, '')}/payment-status?status=failed&message=${encodeURIComponent("Purchase record not found")}`);
       return res.redirect(`${process.env.FRONTEND_URI.replace(/\/$/, '')}/payment-status?status=failed&message=${encodeURIComponent("Purchase record not found")}`);
     }
 
@@ -200,7 +204,7 @@ router.get("/complete-khalti-payment", async (req, res) => {
       pidx,
       transactionId: transaction_id,
       productId: purchase_order_id,
-      amount: amountInNPR,
+      totalPrice: amountInNPR,
       dataFromVerificationReq: {
         ...paymentInfo,
         amountInNPR: Number(paymentInfo.total_amount) / 100
@@ -216,9 +220,14 @@ router.get("/complete-khalti-payment", async (req, res) => {
     console.log("Payment record created:", paymentData);
 
     // Redirect to payment status page with success
-    res.redirect(`${process.env.FRONTEND_URI.replace(/\/$/, '')}/payment-status?status=success&transaction_id=${transaction_id}`);
+    const redirectUrl = `${process.env.FRONTEND_URI.replace(/\/$/, '')}/payment-status?status=success&pidx=${pidx}`;
+    console.log(`Redirecting to success status page. PIDX: ${pidx}`);
+    console.log(`Generated redirect URL: ${redirectUrl}`);
+    res.redirect(redirectUrl);
   } catch (error) {
     console.error("Error processing Khalti payment completion:", error);
+    console.log(`Redirecting to frontend status page with status=failed and message=${encodeURIComponent(error.message)}`);
+    console.log(`Generated redirect URL: ${process.env.FRONTEND_URI.replace(/\/$/, '')}/payment-status?status=failed&message=${encodeURIComponent(error.message)}`);
     res.redirect(`${process.env.FRONTEND_URI.replace(/\/$/, '')}/payment-status?status=failed&message=${encodeURIComponent(error.message)}`);
   }
 });

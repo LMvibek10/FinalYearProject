@@ -622,3 +622,143 @@
   padding-top: 16px;
   border-top: 2px solid #e5e7eb;
 }
+
+.modal-content .breakdown-item.total {
+  border-top: 2px solid #e5e7eb;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* Decline Message Banner */
+.decline-message-banner {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border: 1px solid #f87171;
+  border-radius: 12px;
+  margin: 20px auto;
+  max-width: 1200px;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+  animation: slideDown 0.3s ease-out;
+}
+
+.decline-message-content {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  gap: 16px;
+}
+
+.decline-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.decline-text {
+  flex: 1;
+}
+
+.decline-text h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #dc2626;
+}
+
+.decline-text p {
+  margin: 0;
+  color: #991b1b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.dismiss-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #dc2626;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.dismiss-btn:hover {
+  background-color: rgba(220, 38, 38, 0.1);
+}
+
+/* Processing Payment Banner */
+.processing-payment-banner {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border: 1px solid #34d399;
+  border-radius: 12px;
+  margin: 20px auto;
+  max-width: 1200px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+  animation: slideDown 0.3s ease-out;
+}
+
+.processing-content {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  gap: 16px;
+}
+
+.processing-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.processing-text {
+  flex: 1;
+}
+
+.processing-text h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #059669;
+}
+
+.processing-text p {
+  margin: 0;
+  color: #047857;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design for Banners */
+@media (max-width: 768px) {
+  .decline-message-banner,
+  .processing-payment-banner {
+    margin: 10px;
+    border-radius: 8px;
+  }
+
+  .decline-message-content,
+  .processing-content {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .decline-text h3,
+  .processing-text h3 {
+    font-size: 16px;
+  }
+
+  .decline-text p,
+  .processing-text p {
+    font-size: 13px;
+  }
+}

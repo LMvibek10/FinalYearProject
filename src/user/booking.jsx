@@ -12,6 +12,9 @@ const Booking = () => {
   const navigate = useNavigate();
   const vehicle = location.state?.vehicle;
   const [showModal, setShowModal] = useState(false);
+  const [declineMessage, setDeclineMessage] = useState('');
+  const [proceedToPayment, setProceedToPayment] = useState(false);
+  const [approvedBooking, setApprovedBooking] = useState(null);
 
   const [pickupDate, setPickupDate] = useState(new Date());
   const [returnDate, setReturnDate] = useState(new Date(new Date().setDate(new Date().getDate() + 1)));
@@ -22,6 +25,21 @@ const Booking = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalDays, setTotalDays] = useState(1);
   const [isInsideValley, setIsInsideValley] = useState(true);
+
+  // Handle state from navigation (decline message or approved booking)
+  useEffect(() => {
+    if (location.state?.declineMessage) {
+      setDeclineMessage(location.state.declineMessage);
+    }
+    if (location.state?.proceedToPayment && location.state?.approvedBooking) {
+      setProceedToPayment(true);
+      setApprovedBooking(location.state.approvedBooking);
+      // Auto-proceed to payment after a short delay
+      setTimeout(() => {
+        handlePaymentProcess(location.state.approvedBooking);
+      }, 1000);
+    }
+  }, [location.state]);
 
   const driverOptions = [
     { value: "with-driver", label: "With Driver" },
@@ -80,47 +98,134 @@ const Booking = () => {
         return;
       }
 
+      if (!driverOption) {
+        alert('Please select a driver option');
+        return;
+      }
+
+      // Validate pickup location has required coordinates
+      if (!pickupLocation.lat || !pickupLocation.lng) {
+        alert('Please select a valid pickup location with coordinates');
+        return;
+      }
+
+      // Validate vehicle data
+      if (!vehicle || !vehicle._id) {
+        alert('Vehicle information is missing. Please try again.');
+        return;
+      }
+
       // Calculate total price including driver cost
       const totalPrice = calculateTotalPrice();
 
-      // Prepare booking data
-      const bookingData = {
+      // Ensure we have valid coordinates
+      const validLat = Number(pickupLocation.lat);
+      const validLng = Number(pickupLocation.lng);
+      
+      if (isNaN(validLat) || isNaN(validLng)) {
+        alert('Invalid pickup location coordinates. Please select a location again.');
+        return;
+      }
+
+      // Prepare booking request data
+      const bookingRequestData = {
+        userId: userDetails.id || userDetails._id,
         vehicleId: vehicle._id,
-        totalPrice: totalPrice,
-        website_url: window.location.origin,
-        vehicleDetails: {
-          name: vehicle.name,
-          category: vehicle.category,
-          subcategory: vehicle.subcategory,
-          fuelType: vehicle.fuelType,
-          seatingCapacity: vehicle.seatingCapacity,
-          makeYear: vehicle.makeYear,
-          insideValleyPrice: vehicle.insideValleyPrice,
-          outsideValleyPrice: vehicle.outsideValleyPrice,
-          image: vehicle.image
+        userDetails: {
+          firstName: userDetails.firstName || 'Unknown',
+          lastName: userDetails.lastName || 'User',
+          email: userDetails.email || 'no-email@example.com',
+          phone: userDetails.phone || 'Not provided',
+          address: userDetails.address || 'Not provided'
         },
-        firstName: userDetails.firstName,
-        lastName: userDetails.lastName,
-        email: userDetails.email,
-        phone: userDetails.phone || '',
-        address: userDetails.address || '',
-        userId: userDetails.id,
+        vehicleDetails: {
+          name: vehicle.name || 'Unknown Vehicle',
+          category: vehicle.category || 'Unknown',
+          subcategory: vehicle.subcategory || 'Unknown',
+          fuelType: vehicle.fuelType || 'Unknown',
+          seatingCapacity: vehicle.seatingCapacity || 4,
+          makeYear: vehicle.makeYear || new Date().getFullYear(),
+          insideValleyPrice: vehicle.insideValleyPrice || 0,
+          outsideValleyPrice: vehicle.outsideValleyPrice || 0,
+          image: vehicle.image || ''
+        },
         bookingDetails: {
           pickupDate: pickupDate,
           returnDate: returnDate,
-          pickupLocation: pickupLocation,
+          pickupLocation: {
+            lat: validLat,
+            lng: validLng,
+            address: pickupLocation.address || 'Selected location'
+          },
           isInsideValley: isInsideValley,
           duration: totalDays,
           driverOption: driverOption,
           totalDays: totalDays
-        }
+        },
+        totalPrice: totalPrice
       };
+
+      // Log the data being sent for debugging
+      console.log('Sending booking request data:', bookingRequestData);
 
       // Close the modal first
       setShowModal(false);
 
+      // Submit booking request
+      const response = await axios.post(`http://localhost:5000/api/booking-requests/submit`, bookingRequestData);
+
+      if (response.data.success) {
+        // Navigate to waiting page with booking request ID
+        navigate('/booking-waiting', {
+          state: {
+            bookingRequestId: response.data.bookingRequestId,
+            bookingDetails: {
+              vehicle: vehicle,
+              totalDays: totalDays,
+              totalPrice: totalPrice,
+              isInsideValley: isInsideValley
+            }
+          }
+        });
+      } else {
+        alert('Failed to submit booking request. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting booking request:', error);
+      console.error('Error response:', error.response?.data);
+      
+      // Show more specific error message
+      if (error.response?.data?.message) {
+        alert(`Error: ${error.response.data.message}`);
+      } else if (error.response?.data?.errors) {
+        alert(`Validation Error: ${error.response.data.errors.join(', ')}`);
+      } else {
+        alert('An error occurred while processing your booking request. Please try again.');
+      }
+    }
+  };
+
+  const handlePaymentProcess = async (bookingData) => {
+    try {
+      const userDetails = JSON.parse(localStorage.getItem('user'));
+      
+      // Prepare payment data from approved booking
+      const paymentData = {
+        vehicleId: bookingData.vehicleId,
+        totalPrice: bookingData.totalPrice,
+        website_url: window.location.origin,
+        vehicleDetails: bookingData.vehicleDetails,
+        firstName: bookingData.userDetails.firstName,
+        lastName: bookingData.userDetails.lastName,
+        email: bookingData.userDetails.email,
+        phone: bookingData.userDetails.phone,
+        address: bookingData.userDetails.address,
+        userId: bookingData.userId,
+        bookingDetails: bookingData.bookingDetails
+      };
+
       // Initialize Khalti payment
-      const response = await axios.post(`http://localhost:5000/khalti/initialize-khalti`, bookingData, {
+      const response = await axios.post(`http://localhost:5000/khalti/initialize-khalti`, paymentData, {
         headers: {
           'Authorization': `Bearer ${userDetails.token}`
         }
@@ -128,7 +233,7 @@ const Booking = () => {
 
       if (response.data.success) {
         // Store booking details in localStorage for payment redirect
-        localStorage.setItem('bookingDetails', JSON.stringify(bookingData));
+        localStorage.setItem('bookingDetails', JSON.stringify(paymentData));
         
         // Redirect to Khalti payment URL
         window.location.href = response.data.payment.payment_url;
@@ -137,7 +242,7 @@ const Booking = () => {
       }
     } catch (error) {
       console.error('Error initializing payment:', error);
-      alert('An error occurred while processing your booking. Please try again.');
+      alert('An error occurred while processing payment. Please try again.');
     }
   };
 
@@ -213,6 +318,39 @@ const Booking = () => {
   return (
     <div className="booking-container">
       <UserNavbar />
+      
+      {/* Decline Message Display */}
+      {declineMessage && (
+        <div className="decline-message-banner">
+          <div className="decline-message-content">
+            <div className="decline-icon">❌</div>
+            <div className="decline-text">
+              <h3>Booking Request Declined</h3>
+              <p>{declineMessage}</p>
+            </div>
+            <button 
+              className="dismiss-btn"
+              onClick={() => setDeclineMessage('')}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Processing Payment Message */}
+      {proceedToPayment && (
+        <div className="processing-payment-banner">
+          <div className="processing-content">
+            <div className="processing-icon">✅</div>
+            <div className="processing-text">
+              <h3>Booking Approved!</h3>
+              <p>Redirecting you to payment process...</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="booking-content">
         <div className="booking-grid">
           {/* Vehicle Summary Section */}

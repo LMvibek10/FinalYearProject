@@ -4,6 +4,7 @@ import signup from '../model/signup.js';
 import jwt from 'jsonwebtoken';
 import { sendOTPEmail } from '../utils/emailConfig.js';
 import otpGenerator from 'otp-generator';
+import mongoose from 'mongoose';
 
 const router = express.Router();
 
@@ -37,26 +38,38 @@ router.post('/', async (req, res) => {
       // Clear the OTP after successful verification
       otpStore.delete(email);
     } else {
-      // Generate and send OTP
-      const generatedOTP = otpGenerator.generate(6, { 
-        upperCaseAlphabets: false, 
-        specialChars: false,
-        lowerCaseAlphabets: false 
-      });
-      
-      // Store OTP temporarily
-      otpStore.set(email, generatedOTP);
-      
-      // Send OTP via email
-      const emailSent = await sendOTPEmail(email, generatedOTP);
-      if (!emailSent) {
-        return res.status(500).json({ message: 'Failed to send OTP' });
+      try {
+        // Generate and send OTP
+        const generatedOTP = otpGenerator.generate(6, { 
+          upperCaseAlphabets: false, 
+          specialChars: false,
+          lowerCaseAlphabets: false 
+        });
+        
+        console.log('Generated OTP:', generatedOTP);
+        
+        // Store OTP temporarily
+        otpStore.set(email, generatedOTP);
+        
+        // Send OTP via email
+        const emailSent = await sendOTPEmail(email, generatedOTP);
+        if (!emailSent) {
+          console.error('Failed to send OTP email');
+          return res.status(500).json({ message: 'Failed to send OTP' });
+        }
+        
+        console.log('OTP sent successfully to:', email);
+        return res.status(200).json({ 
+          message: 'OTP sent successfully',
+          requiresOTP: true 
+        });
+      } catch (error) {
+        console.error('Error in OTP generation/sending:', error);
+        return res.status(500).json({ 
+          message: 'Error generating/sending OTP',
+          error: error.message 
+        });
       }
-      
-      return res.status(200).json({ 
-        message: 'OTP sent successfully',
-        requiresOTP: true 
-      });
     }
 
     // Hash password
@@ -174,6 +187,48 @@ router.put('/update/:email', async (req, res) => {
   } catch (error) {
     console.error('Error updating user:', error);
     res.status(500).json({ message: 'Update failed', error: error.message });
+  }
+});
+
+// DELETE route to delete user by ID
+router.delete('/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Validate MongoDB ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID format' });
+    }
+
+    // Check if user exists
+    const user = await signup.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Prevent deletion of admin user
+    if (user.email === 'rentease.admin@gmail.com') {
+      return res.status(403).json({ message: 'Cannot delete admin user' });
+    }
+
+    // Delete the user
+    await signup.findByIdAndDelete(userId);
+
+    res.status(200).json({ 
+      message: 'User deleted successfully',
+      deletedUser: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
+      }
+    });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ 
+      message: 'Failed to delete user', 
+      error: error.message 
+    });
   }
 });
 

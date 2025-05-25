@@ -40,7 +40,28 @@ const UserVehicle = () => {
     })
 
   const handleRentNow = (vehicle) => {
+    // Check if vehicle is available
+    if (vehicle.status !== 'Available') {
+      alert('This vehicle is not available for booking at the moment.');
+      return;
+    }
     navigate("/booking", { state: { vehicle } })
+  }
+
+  // Handler for Rate Us button
+  const handleRateUs = (vehicle) => {
+    // Get user data from localStorage
+    const userData = localStorage.getItem('user');
+    if (!userData) {
+      alert('Please login to rate vehicles');
+      navigate('/login');
+      return;
+    }
+    
+    const user = JSON.parse(userData);
+    const userId = user.id || user._id; // Handle both possible ID fields
+    
+    navigate("/user_rating", { state: { vehicleId: vehicle._id, userId } })
   }
 
   return (
@@ -142,12 +163,21 @@ const UserVehicle = () => {
                       </div>
                     </div>
                   </div>
-                  <button 
-                    className="rent-btn"
-                    onClick={() => handleRentNow(vehicle)}
-                  >
-                    Rent Now
-                  </button>
+                  <div className="button-group">
+                    <button 
+                      className="rate-btn"
+                      onClick={() => handleRateUs(vehicle)}
+                    >
+                      Rate Us
+                    </button>
+                    <button 
+                      className={`rent-btn ${vehicle.status !== 'Available' ? 'unavailable' : ''}`}
+                      onClick={() => handleRentNow(vehicle)}
+                      disabled={vehicle.status !== 'Available'}
+                    >
+                      {vehicle.status === 'Available' ? 'Rent Now' : 'Not Available'}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

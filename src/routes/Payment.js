@@ -328,4 +328,59 @@ router.post("/create-payment", async (req, res) => {
   }
 });
 
+// Verify payment status by transaction ID
+router.get("/verify/:transactionId", async (req, res) => {
+  try {
+    const { transactionId } = req.params;
+    console.log(`Received verification request for transactionId: ${transactionId}`);
+
+    // Find payment record by transaction ID
+    const payment = await Payment.findOne({ transactionId });
+
+    if (!payment) {
+      console.log(`Payment record not found for transactionId: ${transactionId}. Attempting to search by pidx.`);
+      // If payment record not found by transactionId, try searching by pidx
+      const paymentByPidx = await Payment.findOne({ pidx: transactionId });
+
+      if (!paymentByPidx) {
+        console.log(`Payment record not found for pidx: ${transactionId}.`);
+        // If payment record not found, check if it's a manual transaction
+        if (transactionId.startsWith('MANUAL-')) {
+          return res.status(200).json({
+            success: true,
+            payment: {
+              status: 'success',
+              message: 'Manual payment verified'
+            }
+          });
+        }
+        
+        return res.status(404).json({
+          success: false,
+          message: "Payment record not found"
+        });
+      }
+    }
+
+    // Return payment status
+    return res.status(200).json({
+      success: true,
+      payment: {
+        status: payment.status,
+        amount: payment.amount,
+        paymentDate: payment.paymentDate,
+        paymentGateway: payment.paymentGateway,
+        message: payment.status === 'success' ? 'Payment verified successfully' : 'Payment verification failed'
+      }
+    });
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error verifying payment status",
+      error: error.message
+    });
+  }
+});
+
 export default router; 

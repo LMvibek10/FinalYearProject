@@ -1,37 +1,93 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaCheckCircle, FaHome, FaListAlt } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import './PaymentSuccess.css'; // Import the new CSS file
 
 const PaymentSuccessModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  const handleNavigation = (path) => {
+    onClose(); // Close the modal first
+    navigate(path);
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-        <div className="text-center">
-          <div className="text-green-500 text-6xl mx-auto mb-4">✓</div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Payment Successful!</h2>
-          <p className="text-gray-600 mb-6">
-            Your payment has been processed successfully. Thank you for your booking!
-          </p>
-          <div className="flex flex-col gap-3">
-            <button
-              onClick={() => navigate('/')}
-              className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 transition-colors"
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="payment-success-modal-overlay"
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ type: "spring", duration: 0.5 }}
+          className="payment-success-modal-content"
+        >
+          <div className="text-center">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring" }}
+              className="payment-success-icon-container"
             >
-              Go to Homepage
-            </button>
-            <button
-              onClick={() => navigate('/user/bookings')}
-              className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors"
+              <FaCheckCircle className="payment-success-icon" />
+            </motion.div>
+            <motion.h2
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="payment-success-title"
             >
-              View My Bookings
-            </button>
+              Payment Successful!
+            </motion.h2>
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="payment-success-message"
+            >
+              Your payment has been processed successfully. Thank you for your booking!
+            </motion.p>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="payment-success-buttons"
+            >
+              <button
+                onClick={() => handleNavigation('/')}
+                className="payment-success-button payment-success-button-green"
+              >
+                <FaHome className="payment-success-button-icon" />
+                Go to Homepage
+              </button>
+              <button
+                onClick={() => handleNavigation('/user/booking')}
+                className="payment-success-button payment-success-button-blue"
+              >
+                <FaListAlt className="payment-success-button-icon" />
+                View My Bookings
+              </button>
+            </motion.div>
           </div>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

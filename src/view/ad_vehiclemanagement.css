@@ -166,8 +166,37 @@
     border-radius: 1rem;
     font-size: 0.875rem;
     font-weight: 500;
+    text-transform: capitalize;
+}
+
+/* Default status (Available) - Green */
+.ad-vm-status-available {
     background-color: #dcfce7;
     color: #16a34a;
+}
+
+/* Booked status - Yellow */
+.ad-vm-status-booked {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+/* Maintenance status - Orange */
+.ad-vm-status-maintenance {
+    background-color: #fed7d7;
+    color: #c53030;
+}
+
+/* Rented status - Blue */
+.ad-vm-status-rented {
+    background-color: #dbeafe;
+    color: #2563eb;
+}
+
+/* Fallback for any unspecified status */
+.ad-vm-status:not([class*="ad-vm-status-"]) {
+    background-color: #f1f5f9;
+    color: #64748b;
 }
 
 .ad-vm-actions {
