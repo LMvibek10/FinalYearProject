@@ -81,6 +81,29 @@ app.get('/', (req, res) => {
   res.send('Welcome to RentEase API');
 });
 
+// Debug route to list all available routes
+app.get('/api/debug/routes', (req, res) => {
+  const routes = [];
+  app._router.stack.forEach((middleware) => {
+    if (middleware.route) {
+      routes.push({
+        path: middleware.route.path,
+        methods: Object.keys(middleware.route.methods)
+      });
+    } else if (middleware.name === 'router') {
+      middleware.handle.stack.forEach((handler) => {
+        if (handler.route) {
+          routes.push({
+            path: handler.route.path,
+            methods: Object.keys(handler.route.methods)
+          });
+        }
+      });
+    }
+  });
+  res.json({ routes });
+});
+
 // Public Routes
 app.use("/api/signup", signupRouter);
 app.use("/api/signin", signinRouter);
@@ -90,7 +113,9 @@ app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/profile", profileRouter);
 app.use('/api/auth', authRoutes);
 app.use("/khalti", khaltiRouter);
+console.log('Registering rating routes at /api/ratings');
 app.use('/api/ratings', ratingRoutes);
+console.log('Rating routes registered successfully');
 app.use('/api/booking-requests', bookingRequestRoutes);
 
 // Error handling middleware

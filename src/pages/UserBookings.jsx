@@ -216,12 +216,6 @@ const UserBookings = () => {
                       <span className="reason-text">{booking.adminResponse.reason}</span>
                     </div>
                   )}
-
-                  {booking.status === 'approved' && (
-                    <div className="approved-message">
-                      <span className="approved-text">✅ Your booking has been approved! You can now proceed with payment.</span>
-                    </div>
-                  )}
                 </div>
               </div>
             ))}

@@ -77,7 +77,7 @@ const PaymentSuccessModal = ({ isOpen, onClose }) => {
                 Go to Homepage
               </button>
               <button
-                onClick={() => handleNavigation('/user/booking')}
+                onClick={() => handleNavigation('/user/bookings')}
                 className="payment-success-button payment-success-button-blue"
               >
                 <FaListAlt className="payment-success-button-icon" />

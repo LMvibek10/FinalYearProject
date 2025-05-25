@@ -10,12 +10,25 @@ const UserVehicle = () => {
   const [vehicles, setVehicles] = useState([])
   const [selectedCategory, setSelectedCategory] = useState("Car")
   const [searchQuery, setSearchQuery] = useState("")
-  const [sortOrder, setSortOrder] = useState("low-to-high")
+  const [selectedSubcategory, setSelectedSubcategory] = useState("all")
   const navigate = useNavigate()
+
+  // Subcategory options mapping
+  const subcategoryOptions = {
+    Car: ['Sedan', 'Hatchback', 'Pickup'],
+    Bike: ['Sports', 'Touring', 'Cruise', 'Naked'],
+    Van: ['Hiace', 'Mini Van', 'Carrier'],
+    Bus: ['Mini Bus', 'Tourist']
+  }
 
   useEffect(() => {
     fetchVehicles()
   }, [])
+
+  // Reset subcategory when category changes
+  useEffect(() => {
+    setSelectedSubcategory("all")
+  }, [selectedCategory])
 
   const fetchVehicles = async () => {
     try {
@@ -28,16 +41,15 @@ const UserVehicle = () => {
 
   const filteredVehicles = vehicles
     .filter(
-      (vehicle) =>
-        vehicle.category.toLowerCase() === selectedCategory.toLowerCase() &&
-        vehicle.name.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
-    .sort((a, b) => {
-      if (sortOrder === "low-to-high") {
-        return a.pricePerDay - b.pricePerDay
+      (vehicle) => {
+        const matchesCategory = vehicle.category.toLowerCase() === selectedCategory.toLowerCase()
+        const matchesSearch = vehicle.name.toLowerCase().includes(searchQuery.toLowerCase())
+        const matchesSubcategory = selectedSubcategory === "all" || 
+          vehicle.subcategory.toLowerCase() === selectedSubcategory.toLowerCase()
+        
+        return matchesCategory && matchesSearch && matchesSubcategory
       }
-      return b.pricePerDay - a.pricePerDay
-    })
+    )
 
   const handleRentNow = (vehicle) => {
     // Check if vehicle is available
@@ -90,14 +102,18 @@ const UserVehicle = () => {
               className="search-input"
             />
 
-            <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} className="sort-select">
-              <option value="low-to-high">Price: Low to High</option>
-              <option value="high-to-low">Price: High to Low</option>
+            <select 
+              value={selectedSubcategory} 
+              onChange={(e) => setSelectedSubcategory(e.target.value)} 
+              className="subcategory-select"
+            >
+              <option value="all">All {selectedCategory} Types</option>
+              {subcategoryOptions[selectedCategory]?.map((subcategory) => (
+                <option key={subcategory} value={subcategory.toLowerCase()}>
+                  {subcategory}
+                </option>
+              ))}
             </select>
-
-            <button className="filters-btn">
-              <span>Filters</span>
-            </button>
           </div>
         </div>
 

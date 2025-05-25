@@ -9,6 +9,7 @@ import UserVehicle from './user/user_vehicle';
 import Booking from "./user/booking";
 import Profile from "./user/Profile";
 import Users from "./view/ad_users";
+import AdRatings from "./view/ad_ratings";
 import PaymentStatus from "./pages/PaymentStatus";
 import UserRating from "./pages/UserRating";
 import AdminNotifications from "./component/ad_notification";
@@ -29,6 +30,7 @@ function App() {
         <Route path="/booking" element={<Booking />} />
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/users" element={<Users/>}/>
+        <Route path="/ratings" element={<AdRatings/>}/>
         <Route path="/payment-status" element={<PaymentStatus />} />
         <Route path="/user_rating" element={<UserRating />} />
         <Route path="/notifications" element={<AdminNotifications />} />

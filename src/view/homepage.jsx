@@ -27,77 +27,78 @@ const Header = () => {
   };
 
   return (
-    <header className="homepage-header">
-      <div className="homepage-header-container">
-        <div className="homepage-header-content">
-          <div className="homepage-logo">
-            <img src="/images/logo.png" alt="RentEase Logo" className="homepage-logo-image" />
+    <header className="rentease-main-header">
+      <div className="rentease-header-wrapper">
+        <div className="rentease-header-inner">
+          <div className="rentease-brand-logo">
+            <img src="/images/logo.png" alt="RentEase Logo" className="rentease-logo-img" />
+            <span className="rentease-brand-text">RentEase</span>
           </div>
-          <nav className="homepage-nav-links">
-            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('vehicle-fleet'); }} className="homepage-nav-link">
+          <nav className="rentease-navigation-menu">
+            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('vehicle-fleet'); }} className="rentease-nav-item">
               Vehicles
             </a>
-            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('how-we-work'); }} className="homepage-nav-link">
+            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('how-we-work'); }} className="rentease-nav-item">
               How we Work
             </a>
-            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('about-contact'); }} className="homepage-nav-link">
+            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('about-contact'); }} className="rentease-nav-item">
               About Us
             </a>
-            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('about-contact'); }} className="homepage-nav-link">
+            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('about-contact'); }} className="rentease-nav-item">
               Contact Us
             </a>
           </nav>
-          <div className="homepage-auth-buttons">
+          <div className="rentease-auth-section">
             {user ? (
               <>
-                <span className="homepage-user-name">Welcome, {user.firstName}</span>
-                <button className="homepage-logout-button" onClick={handleLogout}>Logout</button>
+                <span className="rentease-user-greeting">Welcome, {user.firstName}</span>
+                <button className="rentease-logout-btn" onClick={handleLogout}>Logout</button>
               </>
             ) : (
               <>
                 <Link to="/login">
-                  <button className="homepage-login-button">Login</button>
+                  <button className="rentease-login-btn">Login</button>
                 </Link>
                 <Link to="/signup">
-                  <button className="homepage-signup-button">Sign Up</button>
+                  <button className="rentease-signup-btn">Sign Up</button>
                 </Link>
               </>
             )}
           </div>
-          <button className="homepage-menu-button" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button className="rentease-mobile-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? "✕" : "☰"}
           </button>
         </div>
       </div>
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="homepage-mobile-menu">
-          <div className="homepage-mobile-menu-content">
-            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('vehicle-fleet'); }} className="homepage-mobile-nav-link">
-              Vehicles
+        <div className="rentease-mobile-dropdown">
+          <div className="rentease-mobile-nav-wrapper">
+            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('vehicle-fleet'); }} className="rentease-mobile-nav-link">
+              🚗 Vehicles
             </a>
-            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('how-we-work'); }} className="homepage-mobile-nav-link">
-              How it Works
+            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('how-we-work'); }} className="rentease-mobile-nav-link">
+              ⚙️ How it Works
             </a>
-            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('about-contact'); }} className="homepage-mobile-nav-link">
-              About
+            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('about-contact'); }} className="rentease-mobile-nav-link">
+              ℹ️ About
             </a>
-            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('about-contact'); }} className="homepage-mobile-nav-link">
-              Contact
+            <a href="#" onClick={(e) => { e.preventDefault(); scrollToSection('about-contact'); }} className="rentease-mobile-nav-link">
+              📞 Contact
             </a>
-            <div className="homepage-mobile-auth-buttons">
+            <div className="rentease-mobile-auth-wrapper">
               {user ? (
                 <>
-                  <span className="homepage-mobile-user-name">Welcome, {user.firstName}</span>
-                  <button className="homepage-mobile-logout-button" onClick={handleLogout}>Logout</button>
+                  <span className="rentease-mobile-user-greeting">Welcome, {user.firstName}</span>
+                  <button className="rentease-mobile-logout-btn" onClick={handleLogout}>Logout</button>
                 </>
               ) : (
                 <>
                   <Link to="/login">
-                    <button className="homepage-mobile-login-button">Login</button>
+                    <button className="rentease-mobile-login-btn">Login</button>
                   </Link>
                   <Link to="/signup">
-                    <button className="homepage-mobile-signup-button">Sign Up</button>
+                    <button className="rentease-mobile-signup-btn">Sign Up</button>
                   </Link>
                 </>
               )}
@@ -132,15 +133,18 @@ const VehicleCard = ({ type, image, description, startingPrice }) => {
   };
 
   return (
-    <div className="homepage-vehicle-card">
-      <img src={image} alt={type} className="homepage-vehicle-image" />
-      <div className="homepage-vehicle-details">
-        <h3 className="homepage-vehicle-type">{type}</h3>
-        <p className="homepage-vehicle-description">{description}</p>
-        <div className="homepage-vehicle-actions">
-          <button className="homepage-view-options-button" onClick={handleViewOptions}>
-            View Options
+    <div className="rentease-vehicle-showcase-card">
+      <img src={image} alt={type} className="rentease-vehicle-showcase-img" />
+      <div className="rentease-vehicle-showcase-info">
+        <h3 className="rentease-vehicle-category-title">{type}</h3>
+        <p className="rentease-vehicle-category-desc">{description}</p>
+        <div className="rentease-vehicle-actions-wrapper">
+          <button className="rentease-view-options-btn" onClick={handleViewOptions}>
+            View Options →
           </button>
+          <div className="rentease-price-badge">
+            Starting from {startingPrice}
+          </div>
         </div>
       </div>
     </div>
@@ -166,120 +170,156 @@ const Homepage = () => {
     }
   };
 
+  const handleBrowseVehicles = () => {
+    if (user) {
+      navigate('/user');
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
-    <div className="homepage">
+    <div className="rentease-homepage">
       <Header />
+      
       {/* Hero Section */}
-      <section className="homepage-hero-section">
-        <div className="homepage-hero-container">
-          <div className="homepage-hero-content">
-            <h1 className="homepage-hero-title">Rent Any Vehicle, Anytime</h1>
-            <p className="homepage-hero-subtitle">
-              Choose from our wide selection of vehicles for any occasion
+      <section className="rentease-hero-banner">
+        <div className="rentease-hero-content-wrapper">
+          <div className="rentease-hero-content">
+            <h1 className="rentease-hero-main-title">Rent Any Vehicle, Anytime</h1>
+            <p className="rentease-hero-description">
+              Choose from our wide selection of premium vehicles for any occasion. 
+              Experience seamless booking and exceptional service with RentEase.
             </p>
-            <button className="homepage-hero-button" onClick={handleGetStarted}>
-              Get Started <span className="homepage-arrow">→</span>
+            <button className="rentease-hero-cta-btn" onClick={handleGetStarted}>
+              Get Started <span className="rentease-cta-arrow">→</span>
             </button>
           </div>
         </div>
       </section>
+      
       {/* Vehicle Categories */}
-      <section id="vehicle-fleet" className="homepage-vehicle-categories">
-        <div className="homepage-categories-container">
-          <h2 className="homepage-categories-title">Our Vehicle Fleet</h2>
-          <div className="homepage-vehicle-grid">
+      <section id="vehicle-fleet" className="rentease-fleet-showcase">
+        <div className="rentease-fleet-container">
+          <h2 className="rentease-fleet-heading">Our Premium Vehicle Fleet</h2>
+          <p className="rentease-fleet-subheading">
+            Discover our diverse collection of well-maintained vehicles, perfect for every journey
+          </p>
+          <div className="rentease-vehicle-showcase-grid">
             <VehicleCard
               type="Cars"
               image="/images/car.png"
-              description="Comfortable sedans and luxury cars for any occasion"
-              startingPrice="NPR 49"
+              description="Comfortable sedans and luxury cars for business trips, family outings, and special occasions"
+              startingPrice="NPR 1,200"
             />
             <VehicleCard
               type="Bikes"
               image="/images/bike.png"
-              description="Modern motorcycles for urban commuting and adventures"
-              startingPrice="NPR 29"
+              description="Modern motorcycles perfect for urban commuting, weekend adventures, and quick city rides"
+              startingPrice="NPR 800"
             />
             <VehicleCard
               type="Vans"
               image="/images/van.png"
-              description="Spacious vans perfect for moving or group trips"
-              startingPrice="NPR 89"
+              description="Spacious vans ideal for moving, group trips, cargo transport, and family vacations"
+              startingPrice="NPR 2,500"
             />
             <VehicleCard
               type="Buses"
               image="/images/bus.png"
-              description="Large capacity buses for events and group travel"
-              startingPrice="NPR 199"
+              description="Large capacity buses perfect for events, group travel, corporate outings, and tours"
+              startingPrice="NPR 5,000"
             />
           </div>
         </div>
       </section>
+      
       {/* Features Section */}
-      <section id="how-we-work" className="homepage-features-section">
-        <div className="homepage-features-container">
-          <h2 className="homepage-features-title">Why Choose RentEase</h2>
-          <div className="homepage-features-grid">
-            <div className="homepage-feature">
-              <span className="homepage-feature-icon">24/7</span>
-              <h3 className="homepage-feature-title">24/7 Availability</h3>
-              <p className="homepage-feature-description">Book your vehicle any time, day or night</p>
-            </div>
-            <div className="homepage-feature">
-              <span className="homepage-feature-icon">📍</span>
-              <h3 className="homepage-feature-title">Convenient Locations</h3>
-              <p className="homepage-feature-description">Multiple pickup points across the city</p>
-            </div>
-            <div className="homepage-feature">
-              <span className="homepage-feature-icon">✔️</span>
-              <h3 className="homepage-feature-title">Quality Guaranteed</h3>
-              <p className="homepage-feature-description">Well-maintained vehicles you can trust</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* CTA Section */}
-      <section className="homepage-cta-section">
-        <div className="homepage-cta-container">
-          <h2 className="homepage-cta-title">Ready to Get Moving?</h2>
-          <p className="homepage-cta-subtitle">
-            Join thousands of satisfied customers who trust RentEase for their vehicle rental needs
+      <section id="how-we-work" className="rentease-features-showcase">
+        <div className="rentease-features-container">
+          <h2 className="rentease-features-main-title">Why Choose RentEase</h2>
+          <p className="rentease-features-subtitle">
+            Experience the difference with our premium service and commitment to excellence
           </p>
-          <button className="homepage-cta-button">Browse Vehicles</button>
+          <div className="rentease-features-display-grid">
+            <div className="rentease-feature-highlight-card">
+              <div className="rentease-feature-icon-wrapper">24/7</div>
+              <h3 className="rentease-feature-highlight-title">24/7 Availability</h3>
+              <p className="rentease-feature-highlight-desc">
+                Book your vehicle any time, day or night. Our round-the-clock service ensures you're never stranded.
+              </p>
+            </div>
+            <div className="rentease-feature-highlight-card">
+              <div className="rentease-feature-icon-wrapper">📍</div>
+              <h3 className="rentease-feature-highlight-title">Convenient Locations</h3>
+              <p className="rentease-feature-highlight-desc">
+                Multiple pickup points across Kathmandu Valley for your convenience. Find us wherever you are.
+              </p>
+            </div>
+            <div className="rentease-feature-highlight-card">
+              <div className="rentease-feature-icon-wrapper">✔️</div>
+              <h3 className="rentease-feature-highlight-title">Quality Guaranteed</h3>
+              <p className="rentease-feature-highlight-desc">
+                Well-maintained, regularly serviced vehicles you can trust. Your safety is our top priority.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
+      
+      {/* CTA Section */}
+      <section className="rentease-final-cta-section">
+        <div className="rentease-final-cta-wrapper">
+          <h2 className="rentease-final-cta-title">Ready to Get Moving?</h2>
+          <p className="rentease-final-cta-description">
+            Join thousands of satisfied customers who trust RentEase for their vehicle rental needs. 
+            Experience the convenience of premium vehicle rentals today.
+          </p>
+          <button className="rentease-final-cta-btn" onClick={handleBrowseVehicles}>
+            Browse Vehicles
+          </button>
+        </div>
+      </section>
+      
       {/* Footer */}
-      <footer id="about-contact" className="homepage-footer">
-        <div className="homepage-footer-container">
-          <div className="homepage-footer-section">
-            <h3 className="homepage-footer-heading">RentEase</h3>
-            <p className="homepage-footer-text">Making vehicle rental easy and accessible for everyone.</p>
+      <footer id="about-contact" className="rentease-main-footer">
+        <div className="rentease-footer-content-wrapper">
+          <div className="rentease-footer-brand-section">
+            <h3 className="rentease-footer-brand-title">RentEase</h3>
+            <p className="rentease-footer-brand-desc">
+              Making vehicle rental easy and accessible for everyone. Your trusted partner for all transportation needs in Nepal.
+            </p>
           </div>
-          <div className="homepage-footer-section">
-            <h4 className="homepage-footer-heading">Quick Links</h4>
-            <ul className="homepage-footer-links">
-              <li><a href="#" className="homepage-footer-link">About Us</a></li>
-              <li><a href="#" className="homepage-footer-link">Vehicles</a></li>
-              <li><a href="#" className="homepage-footer-link">Locations</a></li>
-              <li><a href="#" className="homepage-footer-link">Contact</a></li>
+          <div className="rentease-footer-section">
+            <h4 className="rentease-footer-section-title">Quick Links</h4>
+            <ul className="rentease-footer-links-list">
+              <li><a href="#" className="rentease-footer-link-item">About Us</a></li>
+              <li><a href="#" className="rentease-footer-link-item">Vehicles</a></li>
+              <li><a href="#" className="rentease-footer-link-item">Locations</a></li>
+              <li><a href="#" className="rentease-footer-link-item">Contact</a></li>
             </ul>
           </div>
-          <div className="homepage-footer-section">
-            <h4 className="homepage-footer-heading">Support</h4>
-            <ul className="homepage-footer-links">
-              <li><a href="#" className="homepage-footer-link">FAQs</a></li>
-              <li><a href="#" className="homepage-footer-link">Terms of Service</a></li>
-              <li><a href="#" className="homepage-footer-link">Privacy Policy</a></li>
+          <div className="rentease-footer-section">
+            <h4 className="rentease-footer-section-title">Support</h4>
+            <ul className="rentease-footer-links-list">
+              <li><a href="#" className="rentease-footer-link-item">FAQs</a></li>
+              <li><a href="#" className="rentease-footer-link-item">Terms of Service</a></li>
+              <li><a href="#" className="rentease-footer-link-item">Privacy Policy</a></li>
+              <li><a href="#" className="rentease-footer-link-item">Help Center</a></li>
             </ul>
           </div>
-          <div className="homepage-footer-section">
-            <h4 className="homepage-footer-heading">Contact Us</h4>
-            <ul className="homepage-footer-contact">
-              <li>Old Baneshwor, Kathmandu</li>
-              <li>rentease@gmail.com</li>
-              <li>+977-9742432498</li>
+          <div className="rentease-footer-section">
+            <h4 className="rentease-footer-section-title">Contact Us</h4>
+            <ul className="rentease-footer-contact-list">
+              <li>📍 Old Baneshwor, Kathmandu</li>
+              <li>✉️ rentease@gmail.com</li>
+              <li>📞 +977-9742432498</li>
+              <li>🕒 24/7 Customer Support</li>
             </ul>
           </div>
+        </div>
+        <div className="rentease-footer-bottom">
+          <p>&copy; 2024 RentEase. All rights reserved. | Designed with ❤️ in Nepal</p>
         </div>
       </footer>
     </div>

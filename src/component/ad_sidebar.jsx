@@ -99,6 +99,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               onClick={() => handleNavigation('/users')}
             />
             <SidebarItem 
+              icon="⭐" 
+              text="Ratings" 
+              active={location.pathname === '/ratings'}
+              onClick={() => handleNavigation('/ratings')}
+            />
+            <SidebarItem 
               icon={<Bell size={18} />}
               text="Notifications" 
               active={location.pathname === '/notifications'}

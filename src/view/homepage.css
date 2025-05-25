@@ -1,460 +1,770 @@
-/* Global Styles */
+/* RentEase Homepage - Unique Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f9fafb;
-  }
-  
-  /* Header */
-  .homepage-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-  }
-  
-  .homepage-header-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 16px;
-  }
-  
-  .homepage-header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 64px;
-  }
-  
-  .homepage-logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .homepage-logo-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background-color: #2563eb;
-    color: white;
-    border-radius: 50%;
-    font-weight: bold;
-  }
-  
-  .homepage-logo-text {
-    margin-left: 8px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #1e293b;
-  }
-  
-  .homepage-logo-image {
-    height: 40px;
-    width: auto;
-    object-fit: contain;
-  }
-  
-  .homepage-nav-links {
-    display: flex;
-    gap: 32px;
-  }
-  
-  .homepage-nav-link {
-    color: #4b5563;
-    text-decoration: none;
-    font-weight: 500;
-  }
-  
-  .homepage-nav-link:hover {
-    color: #2563eb;
-  }
-  
-  .homepage-auth-buttons {
-    display: flex;
-    gap: 16px;
-  }
-  
-  .homepage-login-button {
-    padding: 8px 16px;
-    background-color: transparent;
-    color: #2563eb;
-    border: none;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  
-  .homepage-signup-button {
-    padding: 8px 16px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  
-  .homepage-menu-button {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
-  /* Mobile Menu */
-  .homepage-mobile-menu {
-    display: none;
-    background-color: white;
-    padding: 16px;
-  }
-  
-  .homepage-mobile-menu-content {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .homepage-mobile-nav-link {
-    color: #4b5563;
-    text-decoration: none;
-    padding: 8px;
-  }
-  
-  .homepage-mobile-auth-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 16px;
-  }
-  
-  .homepage-mobile-login-button {
-    padding: 8px 16px;
-    background-color: transparent;
-    color: #2563eb;
-    border: none;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  
-  .homepage-mobile-signup-button {
-    padding: 8px 16px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  
-  /* Hero Section */
-  .homepage-hero-section {
-    padding: 96px 16px;
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    color: white;
-    text-align: center;
-  }
-  
-  .homepage-hero-container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .homepage-hero-title {
-    font-size: 48px;
-    font-weight: bold;
-    margin-bottom: 16px;
-  }
-  
-  .homepage-hero-subtitle {
-    font-size: 24px;
-    margin-bottom: 32px;
-    color: #dbeafe;
-  }
-  
-  .homepage-hero-button {
-    padding: 16px 32px;
-    background-color: white;
-    color: #2563eb;
-    border: none;
-    border-radius: 4px;
-    font-size: 18px;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    margin: 0 auto;
-  }
-  
-  .homepage-arrow {
-    margin-left: 8px;
-  }
-  
-  /* Vehicle Categories */
-  .homepage-vehicle-categories {
-    padding: 64px 16px;
-  }
-  
-  .homepage-categories-container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .homepage-categories-title {
-    font-size: 36px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 48px;
-  }
-  
-  .homepage-vehicle-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 24px;
-  }
-  
-  .homepage-vehicle-card {
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-  }
-  
-  .homepage-vehicle-card:hover {
-    transform: scale(1.05);
-  }
-  
-  .homepage-vehicle-image {
-    width: 100%;
-    height: 192px;
-    object-fit: cover;
-  }
-  
-  .homepage-vehicle-details {
-    padding: 16px;
-  }
-  
-  .homepage-vehicle-type {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  
-  .homepage-vehicle-description {
-    color: #4b5563;
-    margin-bottom: 16px;
-  }
-  
-  .homepage-view-options-button {
-    padding: 8px 16px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  
-  /* Features Section */
-  .homepage-features-section {
-    padding: 64px 16px;
-    background-color: white;
-  }
-  .homepage-features-container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .homepage-features-title {
-    font-size: 36px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 48px;
-  }
-  
-  .homepage-features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 24px;
-  }
-  
-  .homepage-feature {
-    text-align: center;
-  }
-  
-  .homepage-feature-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    background-color: #2563eb;
-    color: white;
-    border-radius: 50%;
-    margin: 0 auto 16px;
-    font-size: 18px;
-  }
-  
-  .homepage-feature-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  
-  .homepage-feature-description {
-    color: #4b5563;
-  }
-  
-  /* CTA Section */
-  .homepage-cta-section {
-    padding: 64px 16px;
-    background-color: #f9fafb;
-    text-align: center;
-  }
-  
-  .homepage-cta-container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .homepage-cta-title {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 16px;
-  }
-  
-  .homepage-cta-subtitle {
-    font-size: 20px;
-    color: #4b5563;
-    margin-bottom: 32px;
-  }
-  
-  .homepage-cta-button {
-    padding: 16px 32px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 18px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  
-  /* Footer */
-  .homepage-footer {
-    padding: 64px 16px;
-    background-color: #1e293b;
-    color: #cbd5e1;
-  }
-  
-  .homepage-footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 32px;
-  }
-  
-  .homepage-footer-section {
-    margin-bottom: 24px;
-  }
-  
-  .homepage-footer-heading {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 16px;
-  }
-  
-  .homepage-footer-text {
-    font-size: 14px;
-  }
-  
-  .homepage-footer-links {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .homepage-footer-link {
-    color: #cbd5e1;
-    text-decoration: none;
-    font-size: 14px;
-  }
-  
-  .homepage-footer-link:hover {
-    color: white;
-  }
-  
-  .homepage-footer-contact {
-    list-style: none;
-    padding: 0;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .homepage-nav-links, .homepage-auth-buttons {
-      display: none;
-    }
-    .homepage-menu-button {
-      display: block;
-    }
-    .homepage-mobile-menu {
-      display: block;
-    }
-    .homepage-logo-image {
-      height: 32px;
-    }
-  }
-
-.homepage-user-name {
-  color: #4b5563;
-  margin-right: 16px;
-  font-weight: 500;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #1a202c;
+  overflow-x: hidden;
 }
 
-.homepage-logout-button {
-  padding: 8px 16px;
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.homepage-logout-button:hover {
-  background-color: #dc2626;
-}
-
-.homepage-mobile-user-name {
-  color: #4b5563;
-  padding: 8px;
-  font-weight: 500;
-  display: block;
-}
-
-.homepage-mobile-logout-button {
-  width: 100%;
-  padding: 8px 16px;
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  margin-top: 8px;
-}
-
-.homepage-mobile-logout-button:hover {
-  background-color: #dc2626;
-}
-
+/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* Header Styles */
+.rentease-main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.rentease-header-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.rentease-header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+.rentease-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rentease-logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.rentease-brand-text {
+  font-size: 1.75rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.rentease-navigation-menu {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.rentease-nav-item {
+  color: #4a5568;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.rentease-nav-item:hover {
+  color: #667eea;
+  transform: translateY(-2px);
+}
+
+.rentease-nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.3s ease;
+}
+
+.rentease-nav-item:hover::after {
+  width: 100%;
+}
+
+.rentease-auth-section {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.rentease-user-greeting {
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-right: 1rem;
+}
+
+.rentease-login-btn {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: #667eea;
+  border: 2px solid #667eea;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rentease-login-btn:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.rentease-signup-btn {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.rentease-signup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.rentease-logout-btn {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+}
+
+.rentease-logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 101, 101, 0.4);
+}
+
+.rentease-mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #4a5568;
+  transition: all 0.3s ease;
+}
+
+.rentease-mobile-toggle:hover {
+  color: #667eea;
+  transform: scale(1.1);
+}
+
+/* Mobile Menu */
+.rentease-mobile-dropdown {
+  display: none;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rentease-mobile-nav-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rentease-mobile-nav-link {
+  color: #4a5568;
+  text-decoration: none;
+  padding: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.rentease-mobile-nav-link:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  color: #667eea;
+}
+
+.rentease-mobile-auth-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.rentease-mobile-user-greeting {
+  color: #4a5568;
+  padding: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.rentease-mobile-login-btn,
+.rentease-mobile-signup-btn,
+.rentease-mobile-logout-btn {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rentease-mobile-login-btn {
+  background: transparent;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.rentease-mobile-signup-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.rentease-mobile-logout-btn {
+  background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+  color: white;
+}
+
+/* Hero Section */
+.rentease-hero-banner {
+  padding: 120px 2rem 80px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.rentease-hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+  background-size: cover;
+}
+
+.rentease-hero-content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.rentease-hero-main-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rentease-hero-description {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  margin-bottom: 2.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeInUp 1s ease 0.2s both;
+}
+
+.rentease-hero-cta-btn {
+  padding: 1.25rem 3rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: #667eea;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 1s ease 0.4s both;
+}
+
+.rentease-hero-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+  background: white;
+}
+
+.rentease-cta-arrow {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.rentease-hero-cta-btn:hover .rentease-cta-arrow {
+  transform: translateX(5px);
+}
+
+/* Vehicle Fleet Section */
+.rentease-fleet-showcase {
+  padding: 100px 2rem;
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+.rentease-fleet-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.rentease-fleet-heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.rentease-fleet-subheading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #718096;
+  margin-bottom: 4rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rentease-vehicle-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+}
+
+.rentease-vehicle-showcase-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.rentease-vehicle-showcase-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.rentease-vehicle-showcase-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.rentease-vehicle-showcase-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.rentease-vehicle-showcase-card:hover .rentease-vehicle-showcase-img {
+  transform: scale(1.05);
+}
+
+.rentease-vehicle-showcase-info {
+  padding: 2rem;
+}
+
+.rentease-vehicle-category-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #2d3748;
+}
+
+.rentease-vehicle-category-desc {
+  color: #718096;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.rentease-vehicle-actions-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.rentease-view-options-btn {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  flex-shrink: 0;
+}
+
+.rentease-view-options-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.rentease-price-badge {
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  color: #2d3748;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+/* Features Section */
+.rentease-features-showcase {
+  padding: 100px 2rem;
+  background: white;
+}
+
+.rentease-features-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.rentease-features-main-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.rentease-features-subtitle {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #718096;
+  margin-bottom: 4rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rentease-features-display-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+}
+
+.rentease-feature-highlight-card {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  transition: all 0.3s ease;
+}
+
+.rentease-feature-highlight-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.1);
+}
+
+.rentease-feature-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  font-size: 2rem;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.rentease-feature-highlight-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #2d3748;
+}
+
+.rentease-feature-highlight-desc {
+  color: #718096;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+/* CTA Section */
+.rentease-final-cta-section {
+  padding: 100px 2rem;
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.rentease-final-cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(102,126,234,0.1)" points="0,0 1000,1000 0,1000"/></svg>');
+  background-size: cover;
+}
+
+.rentease-final-cta-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.rentease-final-cta-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.rentease-final-cta-description {
+  font-size: 1.3rem;
+  margin-bottom: 2.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+}
+
+.rentease-final-cta-btn {
+  padding: 1.25rem 3rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.rentease-final-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+}
+
+/* Footer */
+.rentease-main-footer {
+  padding: 80px 2rem 40px;
+  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  color: #cbd5e1;
+}
+
+.rentease-footer-content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.rentease-footer-brand-section {
+  margin-bottom: 2rem;
+}
+
+.rentease-footer-brand-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+
+.rentease-footer-brand-desc {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #a0aec0;
+}
+
+.rentease-footer-section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.rentease-footer-links-list {
+  list-style: none;
+  padding: 0;
+}
+
+.rentease-footer-links-list li {
+  margin-bottom: 0.75rem;
+}
+
+.rentease-footer-link-item {
+  color: #a0aec0;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.rentease-footer-link-item:hover {
+  color: #667eea;
+  transform: translateX(5px);
+}
+
+.rentease-footer-contact-list {
+  list-style: none;
+  padding: 0;
+}
+
+.rentease-footer-contact-list li {
+  margin-bottom: 0.75rem;
+  color: #a0aec0;
+  font-size: 1rem;
+}
+
+.rentease-footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 2rem;
+  text-align: center;
+  color: #718096;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .rentease-navigation-menu, 
+  .rentease-auth-section {
+    display: none;
+  }
+  
+  .rentease-mobile-toggle {
+    display: block;
+  }
+  
+  .rentease-mobile-dropdown {
+    display: block;
+  }
+  
+  .rentease-logo-img {
+    height: 40px;
+  }
+  
+  .rentease-hero-banner {
+    padding: 100px 1rem 60px;
+  }
+  
+  .rentease-fleet-showcase,
+  .rentease-features-showcase,
+  .rentease-final-cta-section {
+    padding: 60px 1rem;
+  }
+  
+  .rentease-vehicle-showcase-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .rentease-features-display-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .rentease-footer-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .rentease-header-wrapper {
+    padding: 0 1rem;
+  }
+  
+  .rentease-hero-banner {
+    padding: 80px 1rem 40px;
+  }
+  
+  .rentease-vehicle-showcase-info {
+    padding: 1.5rem;
+  }
+  
+  .rentease-feature-highlight-card {
+    padding: 2rem 1rem;
+  }
 }
